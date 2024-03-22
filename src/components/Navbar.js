@@ -12,6 +12,7 @@ const Navbar = ({ isLogin, setIsLogin }) => {
   const [userInfo, setUserInfo] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [loggedInUserEmail, setLoggedInUserEmail] = useState('');
   const navigate = useNavigate();
   const goToLoginPage = () => {
     navigate("/login");
@@ -20,6 +21,7 @@ const Navbar = ({ isLogin, setIsLogin }) => {
   const goToLogoutPage = () => {
     alert("로그아웃 되었습니다.");
     setIsLogin(false);
+    localStorage.removeItem("loggedInUserEmail")
   };
 
   // useEffect(() => {
@@ -47,6 +49,14 @@ const Navbar = ({ isLogin, setIsLogin }) => {
     // setSearchResults(results);
   };
 
+  useEffect(()=>{
+    if(isLogin){
+      const email = localStorage.getItem("loggedInUserEmail");
+      const userName = email.split("@")[0];
+      setLoggedInUserEmail(userName);
+    }
+  },[])
+
   return (
     <N.NavWrapper>
       <img src="images/iops-logo.png" />
@@ -63,7 +73,7 @@ const Navbar = ({ isLogin, setIsLogin }) => {
       </N.SearchInput>
       <N.UserInfo>
         <p>
-          {isLogin ? "홍길동님 반갑습니다." : "로그인 이후 이용 가능합니다."}
+          {isLogin ? `${loggedInUserEmail}님 반갑습니다.` : "로그인 이후 이용 가능합니다."}
         </p>
 
         {isLogin ? (

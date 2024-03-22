@@ -11,7 +11,6 @@ const BoardItem = ({ isLogin, boardListItem }) => {
     console.log("아이디 값은? ",id)
     try {
       await axios.put(`http://localhost:8080/board/${id}`);
-      // await axios.post(`http://localhost:8080/board/${id}`);
       console.log("조회수 증가 성공");
     } catch (error) {
       console.error("조회수 증가 에러: ", error);

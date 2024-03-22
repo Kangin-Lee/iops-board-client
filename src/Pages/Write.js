@@ -21,13 +21,13 @@ const Write = ({ isLogin }) => {
     e.preventDefault();
     const title = titleInputRef.current.value;
     const contents = contentsTextAreaRef.current.value;
-
+    const writer = localStorage.getItem("loggedInUserEmail");
     console.log("제출된 제목:", title);
     console.log("제출된 내용:", contents);
     // axios.post("asdasdasd")
 
     try{
-      const response = await axios.post(`http://localhost:8080/create`, {title, contents});
+      const response = await axios.post(`http://localhost:8080/create`, {title, contents, writer});
       const {data:responseData} = response;
 
       if(title ==="" || contents ===""){

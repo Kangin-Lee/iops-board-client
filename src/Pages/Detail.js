@@ -45,9 +45,9 @@ const Detail = ({ isLogin }) => {
     }
   };
 
-  const postComent = async (coment) =>{
-    const response = await axios.post(`http://localhost:8080/coment/${id}`, coment);
-    
+  const postComent = async (comment) =>{
+    const response = await axios.post(`http://localhost:8080/comment/${id}`, comment);
+    console.log(response);
   }
 
   // 수정하러 가기-=-----------------------------------------

@@ -21,13 +21,16 @@ const Login = ({setIsLogin}) => {
   const onSubmit = async (data) => {
     try {
       // 서버에 로그인 요청을 보냅니다.
+      const {email} = data;
       const response = await axios.post('http://localhost:8080/login', data);
       const { data:responseData } = response;
-  
+      
       // 서버로부터 받은 응답 데이터를 확인합니다.
       if (responseData === 'loginSuccess') {
         // 로그인이 성공한 경우 처리
         // 예를 들어, 토큰을 저장하거나 페이지를 이동하는 등의 작업을 수행합니다.
+        localStorage.setItem("loggedInUserEmail",email);
+        
         alert("로그인이 완료되었습니다.", data);
         setIsLogin(true);
         navigate("/");

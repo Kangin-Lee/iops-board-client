@@ -7,6 +7,7 @@ import axios from "axios";
 const BoardList = ({ isLogin }) => {
   const [boardListItem, setBoardListItem] = useState([]);
   const [isLoading, setIsLoading] = useState(true); //로딩 스피너
+  const [nickName, setNickName] = useState("");
 
   //게시판 리스트 서버에서 받아오기-------------------------------
   useEffect(() => {
@@ -17,6 +18,8 @@ const BoardList = ({ isLogin }) => {
         console.log(boardData);
         setBoardListItem(boardData);
         setIsLoading(false);
+        const userName = localStorage.getItem("loggedInUserEmail")
+        setNickName(userName);
       })
       .catch((error) => {
         console.error("Error fetching posts: ", error);
@@ -45,7 +48,7 @@ const BoardList = ({ isLogin }) => {
           </B.BoardTopTitleArea>
         </B.BoardHeader>
 
-        <BoardItem isLogin={isLogin} boardListItem={boardListItem} />
+        <BoardItem isLogin={isLogin} boardListItem={boardListItem} nickName={nickName}/>
       </B.BoardWapper>
     );
   }
