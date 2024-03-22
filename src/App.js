@@ -1,24 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import SignUp from './Pages/SignUp';
+import Login from './Pages/Login';
+import { Tab, Tabs } from 'react-bootstrap';
+import Board from './Pages/Board';
+import Write from './Pages/Write';
+import { useState } from 'react';
+import Detail from './Pages/Detail';
+import Update from './Pages/Update';
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Routes>
+      <Route path='/login' element={<Login setIsLogin={setIsLogin}/>}/>
+      <Route path='/signup' element={<SignUp/>}/>
+      <Route path='/' element={<Board isLogin={isLogin} />}/>
+      <Route path='/board/:id' element={<Detail isLogin={isLogin}/>}/>
+      <Route path='/update/:id' element={<Update isLogin={isLogin}/>}/>
+    </Routes>
+    </>
   );
 }
 
