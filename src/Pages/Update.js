@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import * as U from "../styled-components/UpdateStyled";
 import axios from "axios";
-import CommentItem from "../components/CommentItem";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Update = () => {
@@ -96,11 +95,11 @@ const Update = () => {
         <U.DetailContentsInfo>
           <U.Writer lg={5} className="detail-contents-info">
             <span>작성자</span>
-            <div className="writer-name">{detailContents?.writer}</div>
+            <div className="writer-name">{detailContents?.email}</div>
           </U.Writer>
           <U.WriteTime lg={4} className="detail-contents-info">
             <span>시간</span>
-            <div>{detailContents?.createDate}</div>
+            <div>{detailContents?.updateTime}</div>
           </U.WriteTime>
           <U.ViewCount lg={3} className="detail-contents-info">
             <span>조회수</span>
@@ -121,26 +120,7 @@ const Update = () => {
         </U.UpdateAndDeleteButton>
         {/* ----------------------------------------------------------- */}
 
-        <hr />
-        <U.DetailComment>
-          <h4>
-            댓글 <p>{commentNum}</p>
-          </h4>
 
-          <U.WriteComment>
-            <U.CommentTextArea
-              placeholder="댓글을 입력해 주세요..."
-              onChange={writeComment}
-            />
-            <U.CommentSubmitButton onClick={addComment}>
-              등 록
-            </U.CommentSubmitButton>
-          </U.WriteComment>
-
-          {/* <CommentItem handelComment={handelComment} />
-          <CommentItem />
-          <CommentItem /> */}
-        </U.DetailComment>
       </U.DetailWrapper>
     </Container>
   );

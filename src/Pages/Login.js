@@ -67,6 +67,7 @@ const Login = ({setIsLogin}) => {
             type="text"
             id="input-email"
             placeholder="이메일을 입력하세요."
+            autoFocus
             onChange={(e)=>setEmail(e.target.value)}
             {...register("email", { required: true })}
           />

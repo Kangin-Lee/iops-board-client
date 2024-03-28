@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
-import { Button, Container, Form, Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { HiOutlinePencil } from "react-icons/hi";
 import * as W from "../styled-components/WriteModalStyled";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -10,6 +9,7 @@ const Write = ({ isLogin }) => {
   const [lgShow, setLgShow] = useState(false);
   const titleInputRef = useRef(null);
   const contentsTextAreaRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleClose = () => {
     alert("글이 저장되지 않았습니다.");
@@ -17,14 +17,14 @@ const Write = ({ isLogin }) => {
     setLgShow(false);
   };
 
+  isLogin = !!localStorage.getItem("loggedInUserEmail");
+
   const onSubmit = async(e) => {
     e.preventDefault();
     const title = titleInputRef.current.value;
     const contents = contentsTextAreaRef.current.value;
     const writer = localStorage.getItem("loggedInUserEmail");
-    console.log("제출된 제목:", title);
-    console.log("제출된 내용:", contents);
-    // axios.post("asdasdasd")
+    console.log("제출:", title,contents,writer);
 
     try{
       const response = await axios.post(`http://localhost:8080/create`, {title, contents, writer});
@@ -35,6 +35,7 @@ const Write = ({ isLogin }) => {
       }else{
         alert("글이 정상적으로 작성되었습니다.");
         setLgShow(false);
+        window.location.reload();
       }
     }catch(error){
       console.log('글 생성 에러', error);
@@ -45,7 +46,13 @@ const Write = ({ isLogin }) => {
     <>
       <W.WriteButton
         onClick={() => {
-          setLgShow(true);
+          if(isLogin){
+            setLgShow(true);
+          }else{
+            alert("로그인한 유저만 이용 가능합니다.")
+            navigate("/login");
+          }
+          
           // {isLogin ? setLgShow(true) : (alert("로그인한 유저만 이용 가능합니다."), navigate("/login"))}
         }}
       >

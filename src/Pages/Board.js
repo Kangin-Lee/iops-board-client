@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import Write from "./Write";
 
 const Board = ({isLogin, setIsLogin}) => {
-
+  const isLocalStorage = !!localStorage.getItem("loggedInUserEmail");
+  console.log(isLocalStorage)
   return (
     <Container style={{fontFamily:"'Noto Sans KR', sans-serif", fontStyle:"normal", fontOpticalSizing:"auto"}}>
       <Navbar isLogin={isLogin} setIsLogin={setIsLogin} />
@@ -16,7 +17,7 @@ const Board = ({isLogin, setIsLogin}) => {
       <div style={{display:"flex", justifyContent:"end"}}>
       <Write isLogin={isLogin}/>
       </div>
-      <PageNation/>
+      {/* <PageNation/> */}
     </Container>
   );
 };

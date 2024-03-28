@@ -6,12 +6,11 @@ export const WriteButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
+  margin: 20px 0;
   background-color: #222f54;
   color: white;
   font-weight: bold;
   transition: 0.3s;
-
   &:hover {
     background-color: #31447a;
     transition: 0.3s;

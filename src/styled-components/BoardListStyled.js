@@ -44,3 +44,12 @@ export const RoadingSpinner =styled.div`
     align-items: center;
     justify-content: center;
 `
+
+export const ErrorMessage = styled.p`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    font-weight: bold;
+    font-size: 2rem;
+`

@@ -1,11 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
+
 import { Route, Routes } from 'react-router-dom';
 import SignUp from './Pages/SignUp';
 import Login from './Pages/Login';
-import { Tab, Tabs } from 'react-bootstrap';
 import Board from './Pages/Board';
-import Write from './Pages/Write';
 import { useState } from 'react';
 import Detail from './Pages/Detail';
 import Update from './Pages/Update';

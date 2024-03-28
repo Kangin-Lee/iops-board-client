@@ -16,10 +16,10 @@ export const CommentAndReCommentButton = styled.div`
     padding-bottom: 5px;
     border-radius: 3px;
     color: white;
-    background-color: #222f54;
+    border: none;
     transition: 0.3s;
     &:hover {
-      background-color: #31447a;
+      
       transition: 0.3s;
       transform: translateY(2px);
     }
@@ -59,7 +59,6 @@ export const ReCommentWrapper = styled.div`
     background-color: #222f54;
     color: white;
     font-size: 1.4rem;
-
     &:hover {
       background-color: #31447a;
       transition: 0.3s;
@@ -67,3 +66,60 @@ export const ReCommentWrapper = styled.div`
     }
   }
 `;
+
+export const EmailAndTime = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    p{
+      margin: 0;
+      color: gray;
+      margin-bottom: 10px;
+    }
+`
+
+export const CommentUpdateButton = styled.button`
+  background-color: green;
+  margin-right: 10px;
+
+  &:hover{
+    background-color: #429b42;
+  }
+`;
+
+export const CommentDeleteButton = styled.button`
+  background-color: #dc3545;
+
+  &:hover{
+    background-color: #e14f5d;
+  }
+`
+
+export const ReCommentButton = styled.button`
+background-color: #222f54;
+&:hover{
+  background-color: #31447a;
+}
+`
+
+export const UpdateCommentInput = styled.input`
+  height: 30px;
+  width: 70%;
+
+  outline: none;
+  border: 2px solid #222f54;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  padding-left: 5px;
+
+  /* margin: 0 10px; */
+`
+
+export const UpdateSubmitButton = styled.button`
+    background-color: green;
+  margin-right: 10px;
+
+  &:hover{
+    background-color: #429b42;
+  }
+`
