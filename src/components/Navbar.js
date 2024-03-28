@@ -5,22 +5,26 @@ import {
   HiOutlineLogin,
 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 
-const Navbar = ({ isLogin }) => {
+const Navbar = () => {
   // const [userInfo, setUserInfo] = useState([]);
   // const [searchTerm, setSearchTerm] = useState("");
   // const [searchResults, setSearchResults] = useState([]);
   const [loggedInUserEmail, setLoggedInUserEmail] = useState('');
+  const isLogin = useSelector(state => state.isLogin); // 리덕스에서 로그인 상태 가져오기
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const goToLoginPage = () => {
     navigate("/login");
   };
-  isLogin = !!localStorage.getItem("loggedInUserEmail");
   const goToLogoutPage = () => {
     alert("로그아웃 되었습니다.");
     localStorage.removeItem("loggedInUserEmail")
+    dispatch({type:"LOGOUT"});
     navigate("/login");
   };
 

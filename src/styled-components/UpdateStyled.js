@@ -103,7 +103,9 @@ export const ViewCount = styled.div`
   }
 `;
 
-export const DetailContents = styled.textarea`
+export const DetailContents = styled.textarea.attrs({
+  placeholder:"내용을 입력해 주세요."
+})`
   width: 100%;
   height: 300px;
   resize: none;

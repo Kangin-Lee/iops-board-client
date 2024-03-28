@@ -1,5 +1,5 @@
-import React, { useEffect,  useState } from "react";
-import {  Container, Spinner} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Container, Spinner } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import * as D from "../styled-components/DetailStyled";
 import axios from "axios";
@@ -8,8 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import * as B from "../styled-components/BoardListStyled";
 
-
-const Detail = ({ isLogin }) => {
+const Detail = () => {
   const [comments, setComments] = useState([]);
   const [commentsData, setCommentsData] = useState([]); //댓글 api
   const [handelComment, sethandelComment] = useState("");
@@ -20,16 +19,16 @@ const Detail = ({ isLogin }) => {
 
   const detailData = () => {
     return axios.get(`http://localhost:8080/board/${id}`);
-  }
+  };
 
-  const {isLoading, data, isError, error} = useQuery({
-    queryKey:['get'],
-    queryFn:detailData,
-    retry:2,
-    select:(data) => {
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ["get"],
+    queryFn: detailData,
+    retry: 2,
+    select: (data) => {
       return data.data;
-    }
-  })
+    },
+  });
 
   // 댓글 api 보내기--------------------------------------------
   const writeComment = (e) => {
@@ -38,18 +37,18 @@ const Detail = ({ isLogin }) => {
   };
 
   const handleKeyPress = (e) => {
-    if(e.key === "Enter"){
+    if (e.key === "Enter") {
       addComment();
     }
-  }
+  };
 
   const addComment = (e) => {
     // e.preventDefault();
 
-    if(!localStorage.getItem("loggedInUserEmail")){
-      alert("로그인한 유저만 사용 가능합니다.")
+    if (!localStorage.getItem("loggedInUserEmail")) {
+      alert("로그인한 유저만 사용 가능합니다.");
       navigate("/login");
-    }else if (handelComment === "") {
+    } else if (handelComment === "") {
       alert("댓글을 작성해 주세요.");
     } else {
       console.log("최종 내용은?: ", handelComment);
@@ -70,7 +69,6 @@ const Detail = ({ isLogin }) => {
   };
 
   //댓글 api 불러오기------------------------------------------
-
   useEffect(() => {
     axios
       .get(`http://localhost:8080/board/${id}/comments`)
@@ -84,7 +82,7 @@ const Detail = ({ isLogin }) => {
       });
   }, [comments]);
 
-  // 수정하러 가기-=-------------------------------------------
+  //  수정하러 가기-=-------------------------------------------
   const goToUpdate = () => {
     if (!!localStorage.getItem("loggedInUserEmail")) {
       navigate(`/update/${id}`);
@@ -94,7 +92,7 @@ const Detail = ({ isLogin }) => {
     }
   };
 
-  // 삭제하기--------------------------------------------------
+  // 게시글 삭제하기--------------------------------------------------
   const deleteContents = async () => {
     if (!!localStorage.getItem("loggedInUserEmail")) {
       try {
@@ -117,10 +115,7 @@ const Detail = ({ isLogin }) => {
   };
 
   if (isError) {
-    return(
-      <B.ErrorMessage>😥 {error.message}</B.ErrorMessage>
-    )
-
+    return <B.ErrorMessage>😥 {error.message}</B.ErrorMessage>;
   }
 
   if (isLoading) {
@@ -142,19 +137,17 @@ const Detail = ({ isLogin }) => {
         </D.DetailTitle>
 
         <D.DetailContentsInfo>
-          <D.Writer lg={5} className="detail-contents-info">
+          <D.Writer lg={5}>
             <span>작성자</span>
-            <div className="writer-name">{data?.email}</div>
+            <div>{data?.email}</div>
           </D.Writer>
-          <D.WriteTime lg={4} className="detail-contents-info">
+          <D.WriteTime lg={4}>
             <span>시간</span>
             <div>
-              {data?.updateTime == null
-                ? data.createDate
-                : data.updateTime}
+              {data?.updateTime == null ? data.createDate : data.updateTime}
             </div>
           </D.WriteTime>
-          <D.ViewCount lg={3} className="detail-contents-info">
+          <D.ViewCount lg={3}>
             <span>조회수</span>
             <div>{data?.count}</div>
           </D.ViewCount>
@@ -182,19 +175,17 @@ const Detail = ({ isLogin }) => {
 
           <D.WriteComment>
             <D.CommentTextArea
-              placeholder="댓글을 입력해 주세요..."
               onChange={writeComment}
-              autoFocus
               onKeyDown={handleKeyPress}
             />
-            <D.CommentSubmitButton onClick={addComment} type="submit">
+            <D.CommentSubmitButton onClick={addComment}>
               등 록
             </D.CommentSubmitButton>
           </D.WriteComment>
 
           {commentsData.map((list, key) => (
             <>
-              <CommentItem list={list} key={key}/>
+              <CommentItem list={list} key={key} />
             </>
           ))}
         </D.DetailComment>

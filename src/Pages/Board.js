@@ -2,20 +2,20 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import BoardList from "../components/BoardList";
-import styled from "styled-components";
 import PageNation from "../components/PageNation";
-import { useNavigate } from "react-router-dom";
 import Write from "./Write";
+import { useSelector } from "react-redux";
 
-const Board = ({isLogin, setIsLogin}) => {
-  const isLocalStorage = !!localStorage.getItem("loggedInUserEmail");
-  console.log(isLocalStorage)
+const Board = () => {
+  const login = useSelector(state=>state.isLogin);
+  console.log("@@@@@", login);
+
   return (
     <Container style={{fontFamily:"'Noto Sans KR', sans-serif", fontStyle:"normal", fontOpticalSizing:"auto"}}>
-      <Navbar isLogin={isLogin} setIsLogin={setIsLogin} />
-      <BoardList isLogin={isLogin}/>
+      <Navbar/>
+      <BoardList/>
       <div style={{display:"flex", justifyContent:"end"}}>
-      <Write isLogin={isLogin}/>
+      <Write/>
       </div>
       {/* <PageNation/> */}
     </Container>

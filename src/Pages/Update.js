@@ -9,8 +9,6 @@ const Update = () => {
   const [detailContents, setDetailContents] = useState([]);
   const [titleValue, setTitleValue] = useState("");
   const [contentsValue, setContentsValue] = useState("");
-  const [commentNum, setCommentNum] = useState(0);
-  const [handelComment, sethandelComment] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -18,6 +16,7 @@ const Update = () => {
   const contentsTextAreaRef = useRef(null);
 
   useEffect(() => {
+    console.log("aaaaaaaaaaaaaaaaa");
     axios
       .get(`http://localhost:8080/board/${id}`)
       .then((response) => {
@@ -33,15 +32,7 @@ const Update = () => {
       });
   }, []);
 
-  const writeComment = (e) => {
-    console.log(e.target.value);
-    sethandelComment(e.target.value);
-  };
 
-  const addComment = (e) => {
-    e.preventDefault();
-    setCommentNum(commentNum + 1);
-  };
 
   const handleInputChange = (e) => {
     setTitleValue(e.target.value);
@@ -51,6 +42,8 @@ const Update = () => {
     setContentsValue(e.target.value);
   };
 
+
+  //수정 완료 버튼 db에 저장--------------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     const title = titleInputRef.current.value;
@@ -111,7 +104,6 @@ const Update = () => {
           ref={contentsTextAreaRef}
           value={contentsValue}
           onChange={handleTextAreaChange}
-          placeholder="내용을 입력해 주세요."
         />
 
         {/* 수정 삭제 버튼---------------------------------------------- */}

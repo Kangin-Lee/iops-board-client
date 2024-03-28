@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import * as B from "../styled-components/BoardItemStyled";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 
-const BoardItem = ({ isLogin, data }) => {
+const BoardItem = ({ data }) => {
   const navigate = useNavigate();
   const [selectItemId, setSelectItemId] = useState(null);
-  isLogin = !!localStorage.getItem("loggedInUserEmail");
+  
+  const isLogin = useSelector(state => state.isLogin); // 리덕스에서 로그인 상태 가져오기
 
+  // 조회수 증가 이벤트--------------------------------------------------
   const increaseCount = async (id) => {
     console.log("아이디 값은? ",id)
     try {
@@ -32,6 +35,7 @@ const BoardItem = ({ isLogin, data }) => {
   //   }
   // })
 
+  //글 쓰기 버튼 --------------------------------------------------
   const showDetailContents = (id) => {
     console.log("클릭했을 때 ", id);
     setSelectItemId(id);

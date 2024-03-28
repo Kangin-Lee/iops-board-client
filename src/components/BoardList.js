@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import * as B from "../styled-components/BoardListStyled";
 import BoardItem from "./BoardItem";
 import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-const BoardList = ({ isLogin }) => {
-  // const [boardListItem, setBoardListItem] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true); //로딩 스피너
-  // const [nickName, setNickName] = useState("");
-  
+const BoardList = () => {
+
   // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
   const fetchData = () => {
     return axios.get("http://localhost:8080/board");
@@ -18,17 +15,14 @@ const BoardList = ({ isLogin }) => {
     queryKey: ["gets"],
     queryFn: fetchData,
     retry: 2, //api를 못 불러 온다면 2번 더 api 호출을 하고 에러 메시지를 반환한다.
-    select:(data) => {
+    select: (data) => {
       return data.data; //data.data를 data로 부르겠다.
-    }
+    },
   });
   // ----------------------------------------------------------
 
   if (isError) {
-    return(
-      <B.ErrorMessage>😥 {error.message}</B.ErrorMessage>
-    )
-
+    return <B.ErrorMessage>😥 {error.message}</B.ErrorMessage>;
   }
 
   if (isLoading) {
@@ -53,7 +47,6 @@ const BoardList = ({ isLogin }) => {
       <BoardItem
         data={data}
         // boardListItem={boardListItem}
-        isLogin={isLogin}
       />
     </B.BoardWapper>
   );

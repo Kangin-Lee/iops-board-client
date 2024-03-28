@@ -132,7 +132,10 @@ export const WriteComment = styled.form`
   display: flex;
 `;
 
-export const CommentTextArea = styled.textarea`
+export const CommentTextArea = styled.textarea.attrs({
+  placeholder:"댓글을 입력해 주세요...",
+  autoFocus:true,
+})`
   width: 100%;
   resize: none;
   height: 100px;
@@ -141,7 +144,9 @@ export const CommentTextArea = styled.textarea`
   border: 3px solid #222f54;
 `;
 
-export const CommentSubmitButton = styled.button`
+export const CommentSubmitButton = styled.button.attrs({
+  type:"submit",
+})`
   width: 100px;
   height: 100px;
   margin-left: 15px;

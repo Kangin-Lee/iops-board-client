@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import styled from "styled-components";
 import { HiMail, HiLockClosed, HiUser, HiPhone,HiOutlineExclamation } from "react-icons/hi";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
