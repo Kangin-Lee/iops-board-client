@@ -4,12 +4,16 @@ import { HiOutlinePencil } from "react-icons/hi";
 import * as W from "../styled-components/WriteModalStyled";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addPost } from "../redux/action";
+import { useBoardData, useCreatePost, useCreatePostMutaion } from "../API/apiService";
 
 const Write = () => {
   const [lgShow, setLgShow] = useState(false);
   const titleInputRef = useRef(null);
   const contentsTextAreaRef = useRef(null);
+  const dispatch = useDispatch();
+
 
   const navigate = useNavigate();
 
@@ -19,15 +23,20 @@ const Write = () => {
     setLgShow(false);
   };
 
-  const createBoardItem = (e) =>{
-    if(e.key === "Enter"){
-      onSubmit();   
-    }
-  }
+  // const createBoardItem = (e) =>{
+  //   if(e.key === "Enter"){
+  //     onSubmit();   
+      
+  //   }
+  // }
 
+    // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
+    const {refetch} = useBoardData();
+    // ----------------------------------------------------------
   const isLogin = useSelector((state) => state.isLogin); // 리덕스에서 로그인 상태 가져오기
 
   const onSubmit = async (event) => {
+    event.preventDefault();
     const title = titleInputRef.current.value;
     const contents = contentsTextAreaRef.current.value;
     const writer = localStorage.getItem("loggedInUserEmail");
@@ -47,11 +56,18 @@ const Write = () => {
       } else {
         alert("글이 정상적으로 작성되었습니다.");
         setLgShow(false);
-        window.location.reload();
+        refetch();
+        window.scrollTo(0, 0);
       }
     } catch (error) {
       console.log("글 생성 에러", error);
     }
+
+    if(title === "" || contents === ""){
+      alert("제목 혹은 내용을 입력해 주세요.");
+      return;
+    }
+    // createMutation.mutate({title, contents, writer});
   };
 
   return (
@@ -99,7 +115,7 @@ const Write = () => {
               <textarea
                 placeholder="내용을 입력하세요"
                 ref={contentsTextAreaRef}
-                onKeyDown={createBoardItem}
+                // onKeyDown={createBoardItem}
               />
             </W.TextAreaWrapper>
             <hr />

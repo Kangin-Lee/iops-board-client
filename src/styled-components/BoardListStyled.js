@@ -6,24 +6,12 @@ export const BoardWapper = styled.div`
 `;
 
 export const BoardHeader = styled.div`
-    /* display: flex;
-    align-items: center;
-    justify-content: space-around; */
     text-align: center;
     padding: 20px 0 9px 0;
     margin-top: 30px;
     font-weight: bold;
     font-size: 1.2rem;
 `;
-
-// export const BoardTopTitleArea = styled.div`
-//     display: flex;
-
-// ` 
-
-// export const BoardTopTitle = styled.div`
-//     div:contains()
-// ` 
 
 export const BoardTopTitleArea = styled.ul`
     display: flex;

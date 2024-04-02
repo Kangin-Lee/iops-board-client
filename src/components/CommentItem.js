@@ -10,15 +10,19 @@ import {
 import * as C from "../styled-components/CommentItemStyled";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useCommentDelete } from "../API/apiService";
+import { useDispatch, useSelector } from "react-redux";
+import { setHandleUpdateComment } from "../redux/action";
 
 const CommentItem = ({ list }) => {
-  const [isReCommentWrapper, setIsReCommentWrapper] = useState(false);
-  const [updateComments, setUpdateComments] = useState(false);
-  const [reCommentContents, setReCommentContents] = useState("");
+  const [isReCommentWrapper, setIsReCommentWrapper] = useState(false); //대댓글 영역
+  const [updateComments, setUpdateComments] = useState(false); 
+  const [reCommentContents, setReCommentContents] = useState(""); //대댓글 내용
   const [commentContents, setCommentContents] = useState("");
-  const [handleUpdateComment, setHandleUpdateComment] = useState("");
   const [isUpdateSubmit, setIsUpdateSubmit] = useState(false);
   const inputRef = useRef(null);
+  const handleUpdateComment = useSelector((state) => state.handleUpdateComment);
+  const dispatch = useDispatch();
 
   const id = list.id;
 
@@ -46,22 +50,20 @@ const CommentItem = ({ list }) => {
     setUpdateComments(!updateComments);
   };
 
+
+  // const {isError:deleteIsError, error:deleteError, data:deletaData, refetch:deleteRefetch} = useCommentDelete(id);
+  // const {mutate:commentDelete, isError:deleteIsError, error:deleteError} = useCommentDelete();
+
   const deleteComment = async () => {
-    const id = list.id;
-    console.log(list.id);
-    try {
-      const response = await axios.delete(
-        `http://localhost:8080/comment/${id}`
-      );
-      const responseData = response.data;
-      // window.location.reload();
-      if (responseData == "삭제") {
-        
-        window.location.reload();
-      }
-    } catch (error) {
-      console.log("삭제 에러", error);
-    }
+    console.log("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+    // console.log(commentDelete);
+    // if (commentDelete == "삭제") {
+    //   console.log("댓글 삭제 완료@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");  
+    //   // deleteRefetch();
+    // }else if(deleteIsError){
+    //   console.log("에러!!@@@@@@@@@@@@@@@@@@@@@@@@@@", deleteError);
+    //   alert("😟",deleteError);
+    // }
   };
 
   // 댓글 수정 api 보내기------------------------------------------
@@ -124,10 +126,8 @@ const CommentItem = ({ list }) => {
 
   // --------------------------------------------------------------------
   const writeUpdateComment = (e) => {
-    console.log(e.target.value);
-    setHandleUpdateComment(e.target.value);
+    dispatch(setHandleUpdateComment(e.target.value));
   };
-  console.log("ddd", list);
   return (
     <>
       <C.DetailCommentItem>

@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 const BoardItem = ({ data }) => {
   const navigate = useNavigate();
   const [selectItemId, setSelectItemId] = useState(null);
-  
-  const isLogin = useSelector(state => state.isLogin); // 리덕스에서 로그인 상태 가져오기
 
+  const isLogin = useSelector(state => state.isLogin); // 리덕스에서 로그인 상태 가져오기
+  const boardList = data.content;
   // 조회수 증가 이벤트--------------------------------------------------
   const increaseCount = async (id) => {
     console.log("아이디 값은? ",id)
@@ -35,7 +35,7 @@ const BoardItem = ({ data }) => {
   //   }
   // })
 
-  //글 쓰기 버튼 --------------------------------------------------
+  //상세 글 보러가기--------------------------------------------------
   const showDetailContents = (id) => {
     console.log("클릭했을 때 ", id);
     setSelectItemId(id);
@@ -49,9 +49,14 @@ const BoardItem = ({ data }) => {
     }
   };
 
+    // data가 유효한지와 배열인지 확인
+    if (!Array.isArray(data.content)) {
+      return null; // data가 배열이 아니면 아무것도 렌더링하지 않음
+    }
+
   return (
     <>
-      {data.map((list,key) => (
+      {boardList.map((list,key) => (
         <B.BoardWapper onClick={()=>showDetailContents(list.id)}>
           <B.BoardContentsItem>
             <li style={{ width: "10%" }}>{list.id}</li>

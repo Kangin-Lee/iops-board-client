@@ -1,25 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as B from "../styled-components/BoardListStyled";
 import BoardItem from "./BoardItem";
 import Spinner from "react-bootstrap/Spinner";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useBoardData } from "../API/apiService";
+import PageNation from "./PageNation";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentPage, setTotalPages } from "../redux/action";
 
 const BoardList = () => {
+  const currentPage = useSelector((state) => state.currentPage);
+  const totalPages = useSelector((state) => state.totalPages);
+  const dispatch = useDispatch();
 
   // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
-  const fetchData = () => {
-    return axios.get("http://localhost:8080/board");
-  };
-  const { isLoading, data, isError, error } = useQuery({
-    queryKey: ["gets"],
-    queryFn: fetchData,
-    retry: 2, //api를 못 불러 온다면 2번 더 api 호출을 하고 에러 메시지를 반환한다.
-    select: (data) => {
-      return data.data; //data.data를 data로 부르겠다.
-    },
-  });
+  const { isLoading, data, isError, error, refetch } =
+    useBoardData(currentPage);
   // ----------------------------------------------------------
+
+  useEffect(() => {
+    refetch();
+
+    // 데이터가 유효하고, totalPages 속성이 존재하는지 확인
+    if (data && data.totalPages) {
+      dispatch(setTotalPages(data.totalPages)); // totalPages 속성을 사용하여 totalPages 설정
+    }
+  }, [currentPage]);
+
+  const onPageChange = (pageNumber) => {
+    dispatch(setCurrentPage(pageNumber));
+  };
 
   if (isError) {
     return <B.ErrorMessage>😥 {error.message}</B.ErrorMessage>;
@@ -32,6 +41,7 @@ const BoardList = () => {
       </B.RoadingSpinner>
     );
   }
+
   return (
     <B.BoardWapper>
       <B.BoardHeader>
@@ -44,10 +54,9 @@ const BoardList = () => {
         </B.BoardTopTitleArea>
       </B.BoardHeader>
 
-      <BoardItem
-        data={data}
-        // boardListItem={boardListItem}
-      />
+      <BoardItem data={data} />
+
+      <PageNation onPageChange={onPageChange} />
     </B.BoardWapper>
   );
 };
