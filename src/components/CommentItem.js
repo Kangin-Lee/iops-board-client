@@ -9,10 +9,11 @@ import {
 } from "react-icons/pi";
 import * as C from "../styled-components/CommentItemStyled";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { useCommentDelete } from "../API/apiService";
+import { useCommentDelete, useGetComment } from "../API/apiService";
 import { useDispatch, useSelector } from "react-redux";
 import { setHandleUpdateComment } from "../redux/action";
+import { showFailAlert } from "../Alert/ErrorAlert";
+import { showSuccessAlert } from "../Alert/SuccessAlert";
 
 const CommentItem = ({ list }) => {
   const [isReCommentWrapper, setIsReCommentWrapper] = useState(false); //대댓글 영역
@@ -50,20 +51,14 @@ const CommentItem = ({ list }) => {
     setUpdateComments(!updateComments);
   };
 
+  const {refetch: updateCommentsRefetch, data: updateCommentsData} = useGetComment(id);
 
-  // const {isError:deleteIsError, error:deleteError, data:deletaData, refetch:deleteRefetch} = useCommentDelete(id);
-  // const {mutate:commentDelete, isError:deleteIsError, error:deleteError} = useCommentDelete();
-
+  // 댓글 삭제---------------------------------------------------
+  const {mutate:deleteCommentMutate} = useCommentDelete(id); 
   const deleteComment = async () => {
     console.log("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
-    // console.log(commentDelete);
-    // if (commentDelete == "삭제") {
-    //   console.log("댓글 삭제 완료@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");  
-    //   // deleteRefetch();
-    // }else if(deleteIsError){
-    //   console.log("에러!!@@@@@@@@@@@@@@@@@@@@@@@@@@", deleteError);
-    //   alert("😟",deleteError);
-    // }
+    deleteCommentMutate();
+    updateCommentsRefetch();
   };
 
   // 댓글 수정 api 보내기------------------------------------------
@@ -73,39 +68,29 @@ const CommentItem = ({ list }) => {
     if (e.key === "Enter") {
       updateSubmit();
     }
-    console.log("aaaaaa",e.onKeyDown)
   };
 
   const updateSubmit = async (e) => {
-    console.log("수정");
     // const id = list.id;
     const contents = handleUpdateComment;
     if (contents === "") {
-      alert("댓글을 입력하세요");
+      showFailAlert("댓글을 입력하세요");
     } else {
       try {
         const response = await axios.put(
           `http://localhost:8080/update/comment/${id}`,
           { contents }
         );
+        console.log(response.data);
         const responseData = response.data;
         if (responseData === "수정") {
           console.log("댓글 수정 완료");
-          alert("수정을 완료하였습니다.");
-          // await axios.get(`http://localhost:8080/update/comment/${id}`)
-          // .then((response) => {
-          //   const commentData = response.data;
-          //   console.log("데이터:", commentData);
-          // })
-          // .catch((error) => {
-          //   console.error("Error fetching posts: ", error);
-          // });
-          // const updateData = await axios.get(`http://localhost:8080/board/${id}/comments`);
-          // const updateResponseData = updateData.data;
-          // console.log("aaaa",updateResponseData);
+          showSuccessAlert("수정을 완료하였습니다.");
           setIsUpdateSubmit(true);
           setUpdateComments(!updateComments);
-          window.location.reload();
+          updateCommentsRefetch();
+          console.log("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",updateCommentsData);
+          // window.location.reload();
         }
       } catch (error) {
         console.log("수정 에러", error);
@@ -113,20 +98,10 @@ const CommentItem = ({ list }) => {
     }
   };
 
-  // const contents = handleUpdateComment;
-  // const{data, isError, error, refetch} = useQuery({
-  //   queryKey:['put'],
-  //   queryFn: () => {
-  //     return axios.put(`http://localhost:8080/update/comment/${id}`, {contents})
-  //   },
-  //   select:(data) => {
-  //     return data.data;
-  //   },
-  // })
-
   // --------------------------------------------------------------------
   const writeUpdateComment = (e) => {
-    dispatch(setHandleUpdateComment(e.target.value));
+    const aaa = dispatch(setHandleUpdateComment(e.target.value));
+    console.log(aaa);
   };
   return (
     <>

@@ -9,12 +9,12 @@ import { setCurrentPage, setTotalPages } from "../redux/action";
 
 const BoardList = () => {
   const currentPage = useSelector((state) => state.currentPage);
-  const totalPages = useSelector((state) => state.totalPages);
+  // const totalPages = useSelector((state) => state.totalPages);
   const dispatch = useDispatch();
 
   // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
   const { isLoading, data, isError, error, refetch } =
-    useBoardData(currentPage);
+    useBoardData();
   // ----------------------------------------------------------
 
   useEffect(() => {

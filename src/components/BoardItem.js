@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as B from "../styled-components/BoardItemStyled";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import { LoginErrorAlert, showFailAlert } from "../Alert/ErrorAlert";
+import { useGetComment } from "../API/apiService";
 
 const BoardItem = ({ data }) => {
   const navigate = useNavigate();
@@ -11,29 +13,6 @@ const BoardItem = ({ data }) => {
 
   const isLogin = useSelector(state => state.isLogin); // 리덕스에서 로그인 상태 가져오기
   const boardList = data.content;
-  // 조회수 증가 이벤트--------------------------------------------------
-  const increaseCount = async (id) => {
-    console.log("아이디 값은? ",id)
-    try {
-      await axios.put(`http://localhost:8080/board/${id}`);
-      console.log("조회수 증가 성공");
-    } catch (error) {
-      console.error("조회수 증가 에러: ", error);
-    }
-  };
-
-  //리액트 쿼리로 서버에서 게시판 조회 수 증가 시키기----------------
-  // const fetchData = () => {
-  //   return axios.put(`http://localhost:8080/board/${id}`);
-  // }
-
-  // const {isLoading, data, isError, error} = useQuery({
-  //   queryKey:["put"],
-  //   queryFn:fetchData,
-  //   select:(count) => {
-  //     return data.data;
-  //   }
-  // })
 
   //상세 글 보러가기--------------------------------------------------
   const showDetailContents = (id) => {
@@ -41,10 +20,9 @@ const BoardItem = ({ data }) => {
     setSelectItemId(id);
     if (isLogin) {
       console.log(isLogin);
-      increaseCount(id);
       navigate(`/board/${id}`);
     } else {
-      alert("로그인 이후 이용 가능합니다.");
+      showFailAlert("로그인한 유저만 이용 가능합니다.");
       navigate("/login");
     }
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import * as D from "../styled-components/DetailStyled";
@@ -6,133 +6,115 @@ import axios from "axios";
 import CommentItem from "../components/CommentItem";
 import { useNavigate, useParams } from "react-router-dom";
 import * as B from "../styled-components/BoardListStyled";
-import { useCommentDelete, useDetailData, useGetComment, usePostComment } from "../API/apiService";
-import { useQuery } from "@tanstack/react-query";
+import {
+  useCommentDelete,
+  useDeletePost,
+  useDetailData,
+  useGetComment,
+  useIncreaseCount,
+  usePostComment,
+} from "../API/apiService";
 import { useDispatch, useSelector } from "react-redux";
 import { setCommentsData, setPostComments } from "../redux/action";
+import { showFailAlert } from "../Alert/ErrorAlert";
+import { showSuccessAlert } from "../Alert/SuccessAlert";
 
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const ref = useRef();
 
-  const postComments = useSelector((state)=>state.postComments); // 댓글 등록하기
-  const commentsData = useSelector((state)=>state.commentsData); //댓글 api
+  const postComments = useSelector((state) => state.postComments); // 댓글 등록하기
+  const commentsData = useSelector((state) => state.commentsData); //댓글 api
   const [handelComment, sethandelComment] = useState(""); // 댓글 내용
 
   //디테일 정보 불러오기------------------------------------------
   const { isLoading, data, isError, error } = useDetailData(id);
 
-  // 댓글 api 보내기--------------------------------------------
-  const writeComment = (e) => {
-    console.log(e.target.value);
-    sethandelComment(e.target.value);
-  };
+  //조회 수 증가-------------------------------------------------
+  const {mutate} = useIncreaseCount(id);
 
-// 댓글 등록 기능---------------------------------------------
-  const addComment = (e) => {
+  useEffect(()=>{
+    mutate();
+  },[])
+
+  // 댓글 api 보내기--------------------------------------------
+  // const writeComment = (e) => {
+  //   // console.log(e.target.value);
+  //   const writeComment = ref.current.value;
+  //   console.log("gggggggg",writeComment);
+  //   sethandelComment(writeComment)
+  // };
+
+  // 댓글 등록 기능---------------------------------------------
+  const addComment = async (e) => {
     e.preventDefault();
 
+    const writeComment = ref.current.value;
+    sethandelComment(writeComment);
+    console.log("@@@@@@@@@@@@@@@",handelComment);
     if (!localStorage.getItem("loggedInUserEmail")) {
-      alert("로그인한 유저만 사용 가능합니다.");
+      showFailAlert("로그인한 유저만 이용 가능합니다.");
       navigate("/login");
     } else if (handelComment === "") {
-      alert("댓글을 작성해 주세요.");
+      showFailAlert("댓글을 작성해 주세요.");
     } else {
-      postComment(handelComment);
-      console.log("댓글 작성 완료");
+      const response = await postComment(handelComment);
+      if (response === "success") {
+        showSuccessAlert("댓글이 성공적으로 등록되었습니다.");
+      } else {
+        showFailAlert("댓글 등록에 실패했습니다.");
+      }
     }
   };
 
-  // const postData = () => {
-  //   return axios.post(
-  //     `http://localhost:8080/board/${id}/comments`,
-  //     { contents, email }
-  //   );
-  // }
-  // const {isLoading, data, isError, error, refetch} = useQuery({
-  //   queryKey:["commentPost"],
-  //   queryFn: postData,
-  //   retry: 2,
-  //   select: (data) => {
-  //     return data.data;
-  //   }
-  // })
+  const {mutate:postCommentMutate} = usePostComment(); //리액트 쿼리로 댓글 등록하기
 
   const postComment = async (contents) => {
     const email = localStorage.getItem("loggedInUserEmail");
-    console.log(contents, email);
-    const response = await axios.post(
-      `http://localhost:8080/board/${id}/comments`,
-      { contents, email }
-    );
-    console.log("댓글", response.data);
-    dispatch(setPostComments(response));
+    return postCommentMutate({id,contents, email})
   };
-
-
   //댓글 api 불러오기------------------------------------------
-  // const {refetch:getCommentRefetch, isLoading:getCommentLoading, isError:getCommentIsError, error:getCommentError, data:getCommentData} = useGetComment(id);
+  const {
+    refetch: getCommentRefetch,
+    isLoading: getCommentLoading,
+    isError: getCommentIsError,
+    error: getCommentError,
+    data: getCommentData,
+  } = useGetComment(id);
+
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/board/${id}/comments`)
-      .then((response) => {
-        const commentData = response.data;
-        dispatch(setCommentsData(commentData));
-        console.log("데이터:", commentData);
-      })
-      .catch((error) => {
-        console.error("Error fetching posts: ", error);
-      });
-    // setCommentsData(getCommentData);
-    // getCommentRefetch();
-  }, [postComments]);
-  console.log("댓글@@@@@@@@",commentsData);
+    getCommentRefetch();
+  }, [addComment]);
+
+  //----------------------------------------------------------
 
   //  수정하러 가기-=-------------------------------------------
   const goToUpdate = () => {
     if (!!localStorage.getItem("loggedInUserEmail")) {
       navigate(`/update/${id}`);
     } else {
-      alert("로그인한 사용자만 이용 가능합니다.");
+      showFailAlert("로그인한 유저만 이용 가능합니다.");
       navigate("/login");
     }
   };
+  //-----------------------------------------------------------
 
   // 게시글 삭제하기--------------------------------------------------
-  // const {isLoading:deleteLoading, isError:deleteIsError, error:deleteError, data:deleteData, refetch:deleteFetch} = useQuery(id);
-
+  const {mutate:deleteMutate} = useDeletePost();
+  
   const deleteContents = async () => {
     if (!!localStorage.getItem("loggedInUserEmail")) {
-      try {
-        const response = await axios.delete(
-          `http://localhost:8080/delete/${id}`
-        );
-        const { data: responseData } = response;
-
-        if (responseData === "delete") {
-          alert("삭제가 완료되었습니다.");
-          navigate("/");
-        }
-      } catch (error) {
-        console.log("삭제 에러", error);
-      }
-      // deleteFetch();
-      // if(deleteData === "delete"){
-      //   alert("삭제가 완료되었습니다.")
-      //   navigate("/");
-      // }
-      
+      deleteMutate(id);
     } else {
-      alert("로그인한 사용자만 이용 가능합니다.");
+      showFailAlert("로그인한 유저만 이용 가능합니다.");
       navigate("/login");
     }
   };
+  // ----------------------------------------------------------------
 
-  
-
-
-// ----------------------------------------------------------------/
+  // ----------------------------------------------------------------/
   if (isError) {
     return <B.ErrorMessage>😥 {error.message}</B.ErrorMessage>;
   }
@@ -163,7 +145,7 @@ const Detail = () => {
           <D.WriteTime lg={4}>
             <span>시간</span>
             <div>
-              {data?.updateTime == null ? data.createDate : data.updateTime} 
+              {data?.updateTime == null ? data.createDate : data.updateTime}
             </div>
           </D.WriteTime>
           <D.ViewCount lg={3}>
@@ -187,26 +169,28 @@ const Detail = () => {
         {/* ----------------------------------------------------------- */}
 
         <hr />
-        <D.DetailComment>
-          <h4>
-            댓글 <p>{commentsData.length}</p>
-          </h4>
+        {getCommentLoading || getCommentIsError ? (
+          <B.ErrorMessage>😥 {getCommentError?.message}</B.ErrorMessage>
+        ) : (
+          <D.DetailComment>
+            <h4>
+              댓글 <p>{getCommentData.length}</p>
+            </h4>
 
-          <D.WriteComment>
-            <D.CommentTextArea
-              onChange={writeComment}
-            />
-            <D.CommentSubmitButton onClick={addComment}>
-              등 록
-            </D.CommentSubmitButton>
-          </D.WriteComment>
+            <D.WriteComment>
+              <D.CommentTextArea ref={ref}/>
+              <D.CommentSubmitButton onClick={addComment}>
+                등 록
+              </D.CommentSubmitButton>
+            </D.WriteComment>
 
-          {commentsData.map((list, key) => (
-            <>
-              <CommentItem list={list} key={key} />
-            </>
-          ))}
-        </D.DetailComment>
+            {getCommentData.map((list, key) => (
+              <>
+                <CommentItem list={list} key={key} />
+              </>
+            ))}
+          </D.DetailComment>
+        )}
       </D.DetailWrapper>
     </Container>
   );

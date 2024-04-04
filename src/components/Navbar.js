@@ -6,6 +6,7 @@ import {
 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { showSuccessAlert } from "../Alert/SuccessAlert";
 
 
 const Navbar = () => {
@@ -22,7 +23,7 @@ const Navbar = () => {
     navigate("/login");
   };
   const goToLogoutPage = () => {
-    alert("로그아웃 되었습니다.");
+    showSuccessAlert("로그아웃 되었습니다.");
     localStorage.removeItem("loggedInUserEmail")
     dispatch({type:"LOGOUT"});
     navigate("/login");

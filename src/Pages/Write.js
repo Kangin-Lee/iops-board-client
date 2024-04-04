@@ -6,70 +6,59 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../redux/action";
-import { useBoardData, useCreatePost, useCreatePostMutaion } from "../API/apiService";
+import {
+  useBoardData,
+  useCreatePost,
+  useCreatePostMutaion,
+} from "../API/apiService";
+import { WriteSuccess, WriteSuccessAlert, showSuccessAlert } from "../Alert/SuccessAlert";
+import { LoginErrorAlert, WriteContentsErrorAlert, WriteTitleErrorAlert, showFailAlert } from "../Alert/ErrorAlert";
 
 const Write = () => {
   const [lgShow, setLgShow] = useState(false);
   const titleInputRef = useRef(null);
   const contentsTextAreaRef = useRef(null);
-  const dispatch = useDispatch();
-
 
   const navigate = useNavigate();
 
   const handleClose = () => {
-    alert("글이 저장되지 않았습니다.");
-
+    showFailAlert("글이 저장되지 않았습니다.");
+  
     setLgShow(false);
   };
 
-  // const createBoardItem = (e) =>{
-  //   if(e.key === "Enter"){
-  //     onSubmit();   
-      
-  //   }
-  // }
-
-    // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
-    const {refetch} = useBoardData();
-    // ----------------------------------------------------------
+  // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
+  const { refetch } = useBoardData();
+  // ----------------------------------------------------------
   const isLogin = useSelector((state) => state.isLogin); // 리덕스에서 로그인 상태 가져오기
 
+  //리액트 쿼리로 서버에 게시글 저장하기--------------------------
+  const { mutate } = useCreatePost();
   const onSubmit = async (event) => {
     event.preventDefault();
-    const title = titleInputRef.current.value;
-    const contents = contentsTextAreaRef.current.value;
-    const writer = localStorage.getItem("loggedInUserEmail");
-    console.log("제출:", title, contents, writer);
 
-    try {
-      const response = await axios.post(`http://localhost:8080/create`, {
-        title,
-        contents,
-        writer,
-      });
-      const { data: responseData } = response;
+    // 필요한 모든 데이터를 객체에 담습니다.
+    const postData = {
+      title: titleInputRef.current.value,
+      contents: contentsTextAreaRef.current.value,
+      writer: localStorage.getItem("loggedInUserEmail"),
+    };
 
-
-      if (title === "" || contents === "") {
-        alert("제목 혹은 내용을 입력해 주세요.");
-      } else {
-        alert("글이 정상적으로 작성되었습니다.");
-        setLgShow(false);
-        refetch();
-        window.scrollTo(0, 0);
-      }
-    } catch (error) {
-      console.log("글 생성 에러", error);
+    // mutate 함수를 호출할 때 postData 객체를 전달합니다.
+    if (postData.title === "") {
+      showFailAlert("내용을 입력해 주세요.");
+    } else if (postData.contents === "") {
+      showFailAlert("내용을 입력해 주세요.");
+    } else {
+      showSuccessAlert("글이 정상적으로 등록되었습니다.");
+      mutate(postData); //useMutaion으로 요청 처리
+      setLgShow(false);
+      
     }
-
-    if(title === "" || contents === ""){
-      alert("제목 혹은 내용을 입력해 주세요.");
-      return;
-    }
-    // createMutation.mutate({title, contents, writer});
+    refetch();
   };
-
+  //---------------------------------------------------------
+  
   return (
     <>
       <W.WriteButton
@@ -77,7 +66,7 @@ const Write = () => {
           if (isLogin) {
             setLgShow(true);
           } else {
-            alert("로그인한 유저만 이용 가능합니다.");
+            showFailAlert("로그인한 유저만 이용 가능합니다.");
             navigate("/login");
           }
         }}

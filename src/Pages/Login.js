@@ -16,42 +16,14 @@ const Login = () => {
     handleSubmit,
   } = useForm();
 
-  const navigate = useNavigate();
-  const login = useSelector((state) => state.isLogin);
-  const logout = useSelector((state) => state.isLogin);
-
-  const dispatch = useDispatch();
-
-  console.log("로그아웃@@@", logout);
-
-  // const {isLoading, isError, error, data:loginData, refetch} = useLoginData(data);
-
+  //로그인 리액트 쿼리로 처리하기--------------------------------
+  const {mutate} = useLoginData();
   const onSubmit = async (data) => {
-    
-    try {
-      // 서버에 로그인 요청을 보냅니다.
-      const { email } = data;
-      const response = await axios.post("http://localhost:8080/login", data);
-      const { data: responseData } = response;
-      // 서버로부터 받은 응답 데이터를 확인합니다.
-      if (responseData === "loginSuccess") {
-        // 로그인이 성공한 경우 처리
-        // 예를 들어, 토큰을 저장하거나 페이지를 이동하는 등의 작업을 수행합니다.
-        localStorage.setItem("loggedInUserEmail", email);
-        
-        alert("로그인이 완료되었습니다.", data);
-        navigate("/");
-        dispatch({ type: "LOGIN" });
-      } else {
-        // 로그인이 실패한 경우 처리
-        alert("유효하지 않은 회원입니다.");
-        console.log("유효하지 않은 회원입니다.");
-      }
-    } catch (error) {
-      console.error("로그인 에러:", error);
-      alert("유효하지 않은 회원입니다.");
-    }
+    const {email} = data;
+    mutate(data, email);
   };
+  //-----------------------------------------------------------
+
   return (
     <L.LoginWapper>
       <L.LoginForm onSubmit={handleSubmit(onSubmit)}>

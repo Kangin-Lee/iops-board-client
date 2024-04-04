@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import * as P from "../styled-components/PageNationStyled";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -12,6 +12,9 @@ const PageNation = ({ onPageChange }) => {
   for (let i = 0; i < totalPages; i++) {
     pageNumbers.push(i);
   }
+  useEffect(()=>{
+    console.log("토탈 페이지",totalPages)
+  },[totalPages])
 
   return (
     <P.PageNationWapper>

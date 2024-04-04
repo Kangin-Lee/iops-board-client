@@ -16,7 +16,6 @@ export const PageNumber = styled.li`
     background-color: white;
     font-weight: bold;
     color: #222f54;
-    transform: translateY(3px);
   }
 
   .page-num {
