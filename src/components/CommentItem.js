@@ -14,6 +14,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHandleUpdateComment } from "../redux/action";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
+import { getCookie } from "../cookie/ReactCookie";
+
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 댓글 컴포넌트
+ * </pre>
+ */
 
 const CommentItem = ({ list }) => {
   const [isReCommentWrapper, setIsReCommentWrapper] = useState(false); //대댓글 영역
@@ -26,6 +35,7 @@ const CommentItem = ({ list }) => {
   const dispatch = useDispatch();
 
   const id = list.id;
+  const userData = getCookie('userLoginInfo');
 
   //대댓글 기능-----------------------------------
   // const isReComment = () => {
@@ -124,7 +134,7 @@ const CommentItem = ({ list }) => {
               onKeyUp={handleKeyDown}
             />
           )}
-          {list.email === localStorage.getItem("loggedInUserEmail") ? (
+          {list.email === userData.email ? (
             <div>
               {!updateComments ? (
                 <C.CommentUpdateButton onClick={updateComment}>

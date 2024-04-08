@@ -6,22 +6,32 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { CookiesProvider } from "react-cookie";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient();
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : index.js
+ * </pre>
+ */
+
 root.render(
   <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    </Provider>
-    <ReactQueryDevtools initialIsOpen={true} buttonPosition="bottom-right"/>
-
+    <CookiesProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </CookiesProvider>
+    <ReactQueryDevtools initialIsOpen={true} buttonPosition="bottom-right" />
   </QueryClientProvider>
 );
 

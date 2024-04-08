@@ -6,6 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetUpdateBoard, usePutUpdateContents } from "../API/apiService";
 import * as B from "../styled-components/BoardListStyled";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 글 수정 페이지
+ * </pre>
+ */
+
 const Update = () => {
   const [titleValue, setTitleValue] = useState("");
   const [contentsValue, setContentsValue] = useState("");

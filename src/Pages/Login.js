@@ -3,9 +3,15 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import { HiMail, HiLockClosed, HiOutlineExclamation } from "react-icons/hi";
 import * as L from "../styled-components/LoginStyled";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { useLoginData } from "../API/apiService";
+
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 로그인 페이지
+ * </pre>
+ */
 
 const Login = () => {
   const [email, setEmail] = useState("");

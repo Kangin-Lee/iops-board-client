@@ -12,6 +12,14 @@ import * as S from "../styled-components/SignUpStyled";
 import axios from "axios";
 import { useSignUpData } from "../API/apiService";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 회원가입 페이지
+ * </pre>
+ */
+
 const SignUp = () => {
   const {
     register,

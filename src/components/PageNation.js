@@ -1,11 +1,19 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import * as P from "../styled-components/PageNationStyled";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const PageNation = ({ onPageChange }) => {
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-04-01
+ * 용도 : 게시판 페이지네이션 컴포넌트
+ * </pre>
+ */
+
+const PageNation = ({ onPageChange,totalPages }) => {
   const currentPage = useSelector((state) => state.currentPage);
-  const totalPages = useSelector((state) => state.totalPages);
+  // const totalPages = useSelector((state) => state.totalPages);
 
   const pageNumbers = [];
 

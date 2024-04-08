@@ -3,10 +3,16 @@ import { Container } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import BoardList from "../components/BoardList";
 import Write from "./Write";
-import { useSelector } from "react-redux";
+
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 전체를 감싸는 용도
+ * </pre>
+ */
 
 const Board = () => {
-  const login = useSelector((state) => state.isLogin);
 
   return (
     <Container

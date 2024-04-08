@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as B from "../styled-components/BoardItemStyled";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { LoginErrorAlert, showFailAlert } from "../Alert/ErrorAlert";
-import { useGetComment } from "../API/apiService";
+import { showFailAlert } from "../Alert/ErrorAlert";
+import { getCookie } from "../cookie/ReactCookie";
+
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 글 아이템 컴포넌트
+ * </pre>
+ */
 
 const BoardItem = ({ data }) => {
   const navigate = useNavigate();
   const [selectItemId, setSelectItemId] = useState(null);
 
-  const isLogin = useSelector(state => state.isLogin); // 리덕스에서 로그인 상태 가져오기
+  const isLogin = getCookie("userLoginInfo");
   const boardList = data.content;
 
   //상세 글 보러가기--------------------------------------------------

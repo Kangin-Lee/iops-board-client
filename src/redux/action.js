@@ -1,3 +1,11 @@
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : redux 사용을 위한 action
+ * </pre>
+ */
+
 export const addPost = (post) => ({
   type: "ADD_POST",
   payload: post,

@@ -11,8 +11,17 @@ import {
   useCreatePost,
   useCreatePostMutaion,
 } from "../API/apiService";
-import { WriteSuccess, WriteSuccessAlert, showSuccessAlert } from "../Alert/SuccessAlert";
-import { LoginErrorAlert, WriteContentsErrorAlert, WriteTitleErrorAlert, showFailAlert } from "../Alert/ErrorAlert";
+import { showSuccessAlert } from "../Alert/SuccessAlert";
+import { showFailAlert } from "../Alert/ErrorAlert";
+import { getCookie } from "../cookie/ReactCookie";
+
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 글작성 페이지
+ * </pre>
+ */
 
 const Write = () => {
   const [lgShow, setLgShow] = useState(false);
@@ -30,7 +39,7 @@ const Write = () => {
   // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
   const { refetch } = useBoardData();
   // ----------------------------------------------------------
-  const isLogin = useSelector((state) => state.isLogin); // 리덕스에서 로그인 상태 가져오기
+  const isLogin = getCookie("userLoginInfo");
 
   //리액트 쿼리로 서버에 게시글 저장하기--------------------------
   const { mutate } = useCreatePost();
@@ -41,21 +50,28 @@ const Write = () => {
     const postData = {
       title: titleInputRef.current.value,
       contents: contentsTextAreaRef.current.value,
-      writer: localStorage.getItem("loggedInUserEmail"),
+      writer: isLogin.email,
     };
 
     // mutate 함수를 호출할 때 postData 객체를 전달합니다.
     if (postData.title === "") {
-      showFailAlert("내용을 입력해 주세요.");
+      showFailAlert("제목을 입력해 주세요.");
     } else if (postData.contents === "") {
       showFailAlert("내용을 입력해 주세요.");
     } else {
-      showSuccessAlert("글이 정상적으로 등록되었습니다.");
-      mutate(postData); //useMutaion으로 요청 처리
-      setLgShow(false);
-      
+      // useMutation의 onSuccess 콜백에 refetch()를 추가하여 요청 성공 시 자동으로 새로고침하도록 설정
+      mutate(postData, {
+        onSuccess: () => {
+          showSuccessAlert("글이 정상적으로 등록되었습니다.");
+          setLgShow(false);
+          refetch();
+        },
+        onError: () => {
+          showFailAlert("글 작성 중 에러가 발생하였습니다.");
+        }
+      });
     }
-    refetch();
+
   };
   //---------------------------------------------------------
   

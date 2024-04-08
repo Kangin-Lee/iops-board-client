@@ -3,8 +3,18 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setPostComments } from "../redux/action";
-import { LoginSuccessAlert, SignUpSuccessAlert, showSuccessAlert } from "../Alert/SuccessAlert";
-import { LoginFailAlert, SignUpFailAlert, showFailAlert } from "../Alert/ErrorAlert";
+import { showSuccessAlert } from "../Alert/SuccessAlert";
+import { showFailAlert } from "../Alert/ErrorAlert";
+import { setCookie } from "../cookie/ReactCookie";
+
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-04-03
+ * 용도 : API 요청 모음
+ * </pre>
+ */
+
 
 //기본 경로 설정---------------------------------
 const BASE_URL = "http://localhost:8080";
@@ -30,14 +40,14 @@ export const useLoginData = () => {
     mutationFn: loginData,
 
     onSuccess: (data, email) => {
-      localStorage.setItem("loggedInUserEmail", email.email);
+      setCookie('userLoginInfo', email); //쿠키 설정
       showSuccessAlert("로그인이 완료되었습니다.");
       navigate("/");
       dispatch({ type: "LOGIN" });
     },
 
-    onError: () => {
-      showFailAlert("유효하지 않은 회원입니다.");
+    onError: (error) => {
+      showFailAlert("유효하지 않은 회원입니다." + error);
     },
   });
 };

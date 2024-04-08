@@ -7,6 +7,14 @@ import PageNation from "./PageNation";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage, setTotalPages } from "../redux/action";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 글 목록 페이지
+ * </pre>
+ */
+
 const BoardList = () => {
   const currentPage = useSelector((state) => state.currentPage);
   // const totalPages = useSelector((state) => state.totalPages);
@@ -56,7 +64,7 @@ const BoardList = () => {
 
       <BoardItem data={data} />
 
-      <PageNation onPageChange={onPageChange} />
+      <PageNation onPageChange={onPageChange} totalPages={data.totalPages}/>
     </B.BoardWapper>
   );
 };

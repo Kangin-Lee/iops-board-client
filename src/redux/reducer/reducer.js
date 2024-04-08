@@ -1,8 +1,16 @@
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : redux 사용을 위한 reducer
+ * </pre>
+ */
+
 //state 초기 값 세팅
 let initalState = {
     isLogin:false, //로그인 상태
     posts:[], 
-    currentPage: 1, //페이지네이션 현재 페이지
+    currentPage: 0, //페이지네이션 현재 페이지
     totalPages: 0, // 페이지네이션 총 페이지 수
     handleUpdateComment:"", // 수정 댓글 상태 정보
     commentsData:[],

@@ -18,6 +18,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCommentsData, setPostComments } from "../redux/action";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
+import { getCookie } from "../cookie/ReactCookie";
+
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : 게시판 상세보기 페이지
+ * </pre>
+ */
 
 const Detail = () => {
   const { id } = useParams();
@@ -28,6 +37,8 @@ const Detail = () => {
   const postComments = useSelector((state) => state.postComments); // 댓글 등록하기
   const commentsData = useSelector((state) => state.commentsData); //댓글 api
   const [handelComment, sethandelComment] = useState(""); // 댓글 내용
+
+  const userData = getCookie("userLoginInfo");
 
   //디테일 정보 불러오기------------------------------------------
   const { isLoading, data, isError, error } = useDetailData(id);
@@ -53,8 +64,9 @@ const Detail = () => {
 
     const writeComment = ref.current.value;
     sethandelComment(writeComment);
-    console.log("@@@@@@@@@@@@@@@",handelComment);
-    if (!localStorage.getItem("loggedInUserEmail")) {
+
+    const userData = getCookie("userLoginInfo");
+    if (userData === undefined) {
       showFailAlert("로그인한 유저만 이용 가능합니다.");
       navigate("/login");
     } else if (handelComment === "") {
@@ -72,7 +84,7 @@ const Detail = () => {
   const {mutate:postCommentMutate} = usePostComment(); //리액트 쿼리로 댓글 등록하기
 
   const postComment = async (contents) => {
-    const email = localStorage.getItem("loggedInUserEmail");
+    const email = userData.email;
     return postCommentMutate({id,contents, email})
   };
   //댓글 api 불러오기------------------------------------------
@@ -92,7 +104,7 @@ const Detail = () => {
 
   //  수정하러 가기-=-------------------------------------------
   const goToUpdate = () => {
-    if (!!localStorage.getItem("loggedInUserEmail")) {
+    if (userData) {
       navigate(`/update/${id}`);
     } else {
       showFailAlert("로그인한 유저만 이용 가능합니다.");
@@ -105,7 +117,7 @@ const Detail = () => {
   const {mutate:deleteMutate} = useDeletePost();
   
   const deleteContents = async () => {
-    if (!!localStorage.getItem("loggedInUserEmail")) {
+    if (userData) {
       deleteMutate(id);
     } else {
       showFailAlert("로그인한 유저만 이용 가능합니다.");
@@ -157,7 +169,7 @@ const Detail = () => {
         <D.DetailContents>{data.contents}</D.DetailContents>
 
         {/* 수정 삭제 버튼---------------------------------------------- */}
-        {data?.email == localStorage.getItem("loggedInUserEmail") ? (
+        {data?.email == userData.email ? (
           <D.UpdateAndDeleteButton>
             <D.UpdateButton onClick={goToUpdate}>수 정</D.UpdateButton>
             <D.DeleteButton onClick={deleteContents}>삭 제</D.DeleteButton>
