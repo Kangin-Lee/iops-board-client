@@ -35,3 +35,8 @@ export const setPostComments = (postComments) => ({
   type:"SET_POST_COMMENTS",
   payload:postComments,
 })
+
+export const setCommentNum = (commentNum) => ({
+  type:"SET_COMMENT_NUM",
+  payload:commentNum,
+})

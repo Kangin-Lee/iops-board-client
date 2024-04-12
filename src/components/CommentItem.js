@@ -9,7 +9,7 @@ import {
 } from "react-icons/pi";
 import * as C from "../styled-components/CommentItemStyled";
 import axios from "axios";
-import { useCommentDelete, useGetComment } from "../API/apiService";
+import { useCommentDelete, useGetComment } from "../API/commentApiService";
 import { useDispatch, useSelector } from "react-redux";
 import { setHandleUpdateComment } from "../redux/action";
 import { showFailAlert } from "../Alert/ErrorAlert";

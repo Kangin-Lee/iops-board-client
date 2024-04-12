@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import * as B from "../styled-components/BoardListStyled";
 import BoardItem from "./BoardItem";
 import Spinner from "react-bootstrap/Spinner";
-import { useBoardData } from "../API/apiService";
+import { useBoardData } from "../API/boardApiService";
 import PageNation from "./PageNation";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage, setTotalPages } from "../redux/action";
@@ -17,20 +17,19 @@ import { setCurrentPage, setTotalPages } from "../redux/action";
 
 const BoardList = () => {
   const currentPage = useSelector((state) => state.currentPage);
-  // const totalPages = useSelector((state) => state.totalPages);
   const dispatch = useDispatch();
 
   // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
-  const { isLoading, data, isError, error, refetch } =
-    useBoardData();
+  const { isLoading, data, isError, error, refetch } = useBoardData();
   // ----------------------------------------------------------
 
+  //페이지가 바뀔 때마다 게시판 api 호출 및 totalPages 설정
   useEffect(() => {
     refetch();
 
     // 데이터가 유효하고, totalPages 속성이 존재하는지 확인
-    if (data && data.totalPages) {
-      dispatch(setTotalPages(data.totalPages)); // totalPages 속성을 사용하여 totalPages 설정
+    if (data && data?.totalPages) {
+      dispatch(setTotalPages(data.totalPages)); 
     }
   }, [currentPage]);
 
@@ -38,10 +37,12 @@ const BoardList = () => {
     dispatch(setCurrentPage(pageNumber));
   };
 
+  //에러 발생 시 보이는 화면
   if (isError) {
     return <B.ErrorMessage>😥 {error.message}</B.ErrorMessage>;
   }
 
+  //로딩 시 보이는 화면
   if (isLoading) {
     return (
       <B.RoadingSpinner>
@@ -50,6 +51,7 @@ const BoardList = () => {
     );
   }
 
+  //정상적으로 api가 호출되었을 때 보이는 화면
   return (
     <B.BoardWapper>
       <B.BoardHeader>
@@ -64,7 +66,7 @@ const BoardList = () => {
 
       <BoardItem data={data} />
 
-      <PageNation onPageChange={onPageChange} totalPages={data.totalPages}/>
+      <PageNation onPageChange={onPageChange} totalPages={data.totalPages} />
     </B.BoardWapper>
   );
 };

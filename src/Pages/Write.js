@@ -9,8 +9,7 @@ import { addPost } from "../redux/action";
 import {
   useBoardData,
   useCreatePost,
-  useCreatePostMutaion,
-} from "../API/apiService";
+} from "../API/boardApiService";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { getCookie } from "../cookie/ReactCookie";

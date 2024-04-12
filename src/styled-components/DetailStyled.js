@@ -112,6 +112,7 @@ export const DetailContents = styled.div`
   padding: 10px;
   margin: 5px 0;
   border-radius: 3px;
+  overflow-wrap: break-word;
 `;
 
 export const DetailComment = styled.div`

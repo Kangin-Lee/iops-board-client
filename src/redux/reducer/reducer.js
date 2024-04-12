@@ -15,6 +15,7 @@ let initalState = {
     handleUpdateComment:"", // 수정 댓글 상태 정보
     commentsData:[],
     postComments:[],
+    commentNum:0,
 }
 
 function reducer (state=initalState, action){
@@ -34,6 +35,8 @@ function reducer (state=initalState, action){
         return{...state, commentsData:action.payload}
     }else if(action.type === "SET_POST_COMMENTS"){
         return{...state, postComments:action.payload}
+    }else if(action.type === "SET_COMMENT_NUM"){
+        return{...state, commentNum:action.payload}
     }
 
     return {...state};

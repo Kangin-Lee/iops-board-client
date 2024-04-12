@@ -33,20 +33,24 @@ const BoardItem = ({ data }) => {
     }
   };
 
-    // data가 유효한지와 배열인지 확인
-    if (!Array.isArray(data.content)) {
-      return null; // data가 배열이 아니면 아무것도 렌더링하지 않음
-    }
+  // data가 유효한지와 배열인지 확인
+  if (!Array.isArray(data.content)) {
+    return null; // data가 배열이 아니면 아무것도 렌더링하지 않음
+  }
 
   return (
     <>
-      {boardList.map((list,key) => (
-        <B.BoardWapper onClick={()=>showDetailContents(list.id)}>
+      {boardList.map((list, key) => (
+        <B.BoardWapper onClick={() => showDetailContents(list.id)}>
           <B.BoardContentsItem>
             <li style={{ width: "10%" }}>{list.id}</li>
             <li style={{ width: "40%" }}>{list.title}</li>
-            <li style={{ width: "20%" }}>{list.email == null?"알수없음":(list.email).split("@")[0]}</li>
-            <li style={{ width: "20%" }}>{list.updateTime === null?list.createDate:list.updateTime}</li>
+            <li style={{ width: "20%" }}>
+              {list.email == null ? "알수없음" : list.email.split("@")[0]}
+            </li>
+            <li style={{ width: "20%" }}>
+              {list.updateTime === null ? list.createDate : list.updateTime}
+            </li>
             <li style={{ width: "10%" }}>{list.count}</li>
           </B.BoardContentsItem>
         </B.BoardWapper>

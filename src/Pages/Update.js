@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import * as U from "../styled-components/UpdateStyled";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetUpdateBoard, usePutUpdateContents } from "../API/apiService";
+import { useParams } from "react-router-dom";
+import { useGetUpdateBoard } from "../API/boardApiService";
 import * as B from "../styled-components/BoardListStyled";
+import { usePutUpdateContents } from "../API/boardApiService";
 
 /**
  * <pre>

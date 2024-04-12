@@ -11,34 +11,41 @@ import { useSelector } from "react-redux";
  * </pre>
  */
 
-const PageNation = ({ onPageChange,totalPages }) => {
+const PageNation = ({ onPageChange, totalPages }) => {
   const currentPage = useSelector((state) => state.currentPage);
-  // const totalPages = useSelector((state) => state.totalPages);
 
   const pageNumbers = [];
 
   for (let i = 0; i < totalPages; i++) {
     pageNumbers.push(i);
   }
-  useEffect(()=>{
-    console.log("토탈 페이지",totalPages)
-  },[totalPages])
+  useEffect(() => {
+    console.log("토탈 페이지", totalPages);
+  }, [totalPages]);
 
   return (
     <P.PageNationWapper>
       <ul className="pagination">
+        <P.PageNumber>
+          <Link onClick={()=> onPageChange(0)} className="first-page, page-non-focus page-num">{"<<"}</Link>
+        </P.PageNumber>
         {pageNumbers.map((number) => (
           <P.PageNumber key={number} className="page-item">
-            <Link
+            <Link key={number}
               onClick={() => onPageChange(number)}
               className={
-                number === currentPage ? "page-active page-num" : "page-num page-non-focus"
+                number === currentPage
+                  ? "page-active page-num"
+                  : "page-num page-non-focus"
               }
             >
               {number + 1}
             </Link>
           </P.PageNumber>
         ))}
+        <P.PageNumber>
+          <Link onClick={()=>onPageChange(totalPages-1)} className="page-non-focus page-num">{">>"}</Link>
+        </P.PageNumber>
       </ul>
     </P.PageNationWapper>
   );

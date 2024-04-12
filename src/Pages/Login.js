@@ -3,13 +3,13 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import { HiMail, HiLockClosed, HiOutlineExclamation } from "react-icons/hi";
 import * as L from "../styled-components/LoginStyled";
 import { useForm } from "react-hook-form";
-import { useLoginData } from "../API/apiService";
+import { useLoginData } from "../API/loginApiService";
 
 /**
  * <pre>
  * 최초 작성자 : 이강인
  * 최초 작성일 : 2024-03-08
- * 용도 : 게시판 로그인 페이지
+ * 용도 : 게시판 로그인 API
  * </pre>
  */
 

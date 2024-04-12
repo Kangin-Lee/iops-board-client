@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as S from "../styled-components/SignUpStyled";
 import axios from "axios";
-import { useSignUpData } from "../API/apiService";
+import { useSignUpData } from "../API/signupApiService";
 
 /**
  * <pre>

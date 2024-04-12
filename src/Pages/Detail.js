@@ -2,23 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import * as D from "../styled-components/DetailStyled";
-import axios from "axios";
 import CommentItem from "../components/CommentItem";
 import { useNavigate, useParams } from "react-router-dom";
 import * as B from "../styled-components/BoardListStyled";
 import {
-  useCommentDelete,
-  useDeletePost,
   useDetailData,
-  useGetComment,
-  useIncreaseCount,
-  usePostComment,
-} from "../API/apiService";
+} from "../API/detailApiService";
 import { useDispatch, useSelector } from "react-redux";
-import { setCommentsData, setPostComments } from "../redux/action";
 import { showFailAlert } from "../Alert/ErrorAlert";
-import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { getCookie } from "../cookie/ReactCookie";
+import { usePostComment,useGetComment } from "../API/commentApiService";
+import {useIncreaseCount} from "../API/viewIncreaseApiService";
+import { useDeletePost } from "../API/boardApiService";
 
 /**
  * <pre>
@@ -42,7 +37,6 @@ const Detail = () => {
 
   //디테일 정보 불러오기------------------------------------------
   const { isLoading, data, isError, error } = useDetailData(id);
-
   //조회 수 증가-------------------------------------------------
   const {mutate} = useIncreaseCount(id);
 
@@ -51,19 +45,14 @@ const Detail = () => {
   },[])
 
   // 댓글 api 보내기--------------------------------------------
-  // const writeComment = (e) => {
-  //   // console.log(e.target.value);
-  //   const writeComment = ref.current.value;
-  //   console.log("gggggggg",writeComment);
-  //   sethandelComment(writeComment)
-  // };
+  const writeComment = (e) => {
+    const writeComment = e.target.value;
+    sethandelComment(writeComment)
+  };
 
   // 댓글 등록 기능---------------------------------------------
   const addComment = async (e) => {
     e.preventDefault();
-
-    const writeComment = ref.current.value;
-    sethandelComment(writeComment);
 
     const userData = getCookie("userLoginInfo");
     if (userData === undefined) {
@@ -72,12 +61,8 @@ const Detail = () => {
     } else if (handelComment === "") {
       showFailAlert("댓글을 작성해 주세요.");
     } else {
-      const response = await postComment(handelComment);
-      if (response === "success") {
-        showSuccessAlert("댓글이 성공적으로 등록되었습니다.");
-      } else {
-        showFailAlert("댓글 등록에 실패했습니다.");
-      }
+      await postComment(handelComment);
+      sethandelComment("");
     }
   };
 
@@ -190,7 +175,7 @@ const Detail = () => {
             </h4>
 
             <D.WriteComment>
-              <D.CommentTextArea ref={ref}/>
+              <D.CommentTextArea  onChange={writeComment}/>
               <D.CommentSubmitButton onClick={addComment}>
                 등 록
               </D.CommentSubmitButton>
