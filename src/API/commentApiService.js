@@ -1,4 +1,4 @@
-import { useMutation,useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { showFailAlert } from "../Alert/ErrorAlert";
@@ -53,6 +53,21 @@ export const useGetComment = (id) => {
     enabled: true,
   });
 };
+
+//댓글 수정 기능-----------------------------------------------
+export const useCommentUpdate = () => {
+
+  const commentUpdate = (commentData) => {
+    const id = commentData.id;
+    const contents = commentData.contents;
+    return apiService.put(`/update/comment/${id}`, {contents})
+  };
+
+  return useMutation({
+    mutationFn: commentUpdate,
+    mutationKey:["updateComment"],
+  })
+}
 
 // 댓글 삭제 기능 -----------------------------------------------
 export const useCommentDelete = (id) => {

@@ -25,7 +25,7 @@ export const useSignUpData = () => {
         navigate("/login");
       },
       onError: () => {
-        showFailAlert("회원가입에 실패했습니다.");
+        showFailAlert("😟 회원가입에 실패했습니다.");
       },
     });
   };

@@ -9,7 +9,11 @@ import {
 } from "react-icons/pi";
 import * as C from "../styled-components/CommentItemStyled";
 import axios from "axios";
-import { useCommentDelete, useGetComment } from "../API/commentApiService";
+import {
+  useCommentDelete,
+  useCommentUpdate,
+  useGetComment,
+} from "../API/commentApiService";
 import { useDispatch, useSelector } from "react-redux";
 import { setHandleUpdateComment } from "../redux/action";
 import { showFailAlert } from "../Alert/ErrorAlert";
@@ -26,7 +30,7 @@ import { getCookie } from "../cookie/ReactCookie";
 
 const CommentItem = ({ list }) => {
   const [isReCommentWrapper, setIsReCommentWrapper] = useState(false); //대댓글 영역
-  const [updateComments, setUpdateComments] = useState(false); 
+  const [updateComments, setUpdateComments] = useState(false);
   const [reCommentContents, setReCommentContents] = useState(""); //대댓글 내용
   const [commentContents, setCommentContents] = useState("");
   const [isUpdateSubmit, setIsUpdateSubmit] = useState(false);
@@ -35,7 +39,7 @@ const CommentItem = ({ list }) => {
   const dispatch = useDispatch();
 
   const id = list.id;
-  const userData = getCookie('userLoginInfo');
+  const userData = getCookie("userLoginInfo");
 
   //대댓글 기능-----------------------------------
   // const isReComment = () => {
@@ -61,18 +65,17 @@ const CommentItem = ({ list }) => {
     setUpdateComments(!updateComments);
   };
 
-  const {refetch: updateCommentsRefetch, data: updateCommentsData} = useGetComment(id);
+  const { refetch: updateCommentsRefetch, data: updateCommentsData } =
+    useGetComment(id);
 
   // 댓글 삭제---------------------------------------------------
-  const {mutate:deleteCommentMutate} = useCommentDelete(id); 
+  const { mutate: deleteCommentMutate } = useCommentDelete(id);
   const deleteComment = async () => {
-    console.log("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
     deleteCommentMutate();
     updateCommentsRefetch();
   };
 
   // 댓글 수정 api 보내기------------------------------------------
-
   //엔터 키를 눌렀을 때 댓글 등록 되게 하기
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -80,38 +83,36 @@ const CommentItem = ({ list }) => {
     }
   };
 
-  const updateSubmit = async (e) => {
-    // const id = list.id;
+  const { mutate } = useCommentUpdate();
+  const updateSubmit = async () => {
     const contents = handleUpdateComment;
+    const commentData = {
+      id: id,
+      contents: contents,
+    };
+
     if (contents === "") {
-      showFailAlert("댓글을 입력하세요");
+      showFailAlert("댓글을 입력하세요.");
     } else {
-      try {
-        const response = await axios.put(
-          `http://localhost:8080/update/comment/${id}`,
-          { contents }
-        );
-        console.log(response.data);
-        const responseData = response.data;
-        if (responseData === "수정") {
-          console.log("댓글 수정 완료");
-          showSuccessAlert("수정을 완료하였습니다.");
-          setIsUpdateSubmit(true);
-          setUpdateComments(!updateComments);
-          updateCommentsRefetch();
-          console.log("ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",updateCommentsData);
-          // window.location.reload();
-        }
-      } catch (error) {
-        console.log("수정 에러", error);
-      }
+      mutate(commentData, {
+        onSuccess: (data) => {
+          if (data.data === "수정") {
+            showSuccessAlert("수정을 완료하였습니다.");
+            setIsUpdateSubmit(true);
+            setUpdateComments(!updateComments);
+            updateCommentsRefetch();
+          }
+        },
+        onError: (error) => {
+          showFailAlert("댓글 수정 중 에러가 발생하였습니다. " + error);
+        },
+      });
     }
   };
 
   // --------------------------------------------------------------------
   const writeUpdateComment = (e) => {
     const aaa = dispatch(setHandleUpdateComment(e.target.value));
-    console.log(aaa);
   };
   return (
     <>

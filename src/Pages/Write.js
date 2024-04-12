@@ -3,8 +3,6 @@ import { Button, Modal } from "react-bootstrap";
 import { HiOutlinePencil } from "react-icons/hi";
 import * as W from "../styled-components/WriteModalStyled";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../redux/action";
 import {
   useBoardData,

@@ -35,7 +35,7 @@ export const useLoginData = () => {
       },
   
       onError: (error) => {
-        showFailAlert("유효하지 않은 회원입니다." + error);
+        showFailAlert("😟 유효하지 않은 회원입니다." + error);
       },
     });
   };
