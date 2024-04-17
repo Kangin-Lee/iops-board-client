@@ -1,14 +1,10 @@
 import React, { useRef, useState } from "react";
 import {
-  PiArrowUDownLeftBold,
-  PiArrowUpBold,
-  PiArrowElbowDownRightBold,
   PiTrashLight,
   PiPencilLine,
   PiCheck,
 } from "react-icons/pi";
 import * as C from "../styled-components/CommentItemStyled";
-import axios from "axios";
 import {
   useCommentDelete,
   useCommentUpdate,
@@ -29,10 +25,7 @@ import { getCookie } from "../cookie/ReactCookie";
  */
 
 const CommentItem = ({ list }) => {
-  const [isReCommentWrapper, setIsReCommentWrapper] = useState(false); //대댓글 영역
   const [updateComments, setUpdateComments] = useState(false);
-  const [reCommentContents, setReCommentContents] = useState(""); //대댓글 내용
-  const [commentContents, setCommentContents] = useState("");
   const [isUpdateSubmit, setIsUpdateSubmit] = useState(false);
   const inputRef = useRef(null);
   const handleUpdateComment = useSelector((state) => state.handleUpdateComment);
@@ -40,26 +33,6 @@ const CommentItem = ({ list }) => {
 
   const id = list.id;
   const userData = getCookie("userLoginInfo");
-
-  //대댓글 기능-----------------------------------
-  // const isReComment = () => {
-  //   setIsReCommentWrapper(!isReCommentWrapper);
-  // };
-  // -------------------------------------------
-
-  const handleChange = (e) => {
-    setReCommentContents(e.target.value);
-  };
-
-  const uploadComment = (e) => {
-    console.log(reCommentContents);
-    // inputRef.current.focus();
-    if (reCommentContents === "") {
-      alert("내용을 입력하세요.");
-    } else {
-      setIsReCommentWrapper(!isReCommentWrapper);
-    }
-  };
 
   const updateComment = () => {
     setUpdateComments(!updateComments);
@@ -112,7 +85,7 @@ const CommentItem = ({ list }) => {
 
   // --------------------------------------------------------------------
   const writeUpdateComment = (e) => {
-    const aaa = dispatch(setHandleUpdateComment(e.target.value));
+    dispatch(setHandleUpdateComment(e.target.value));
   };
   return (
     <>
@@ -135,7 +108,7 @@ const CommentItem = ({ list }) => {
               onKeyUp={handleKeyDown}
             />
           )}
-          {list.email === userData.email ? (
+          {list.email === userData ? (
             <div>
               {!updateComments ? (
                 <C.CommentUpdateButton onClick={updateComment}>
@@ -153,48 +126,12 @@ const CommentItem = ({ list }) => {
               >
                 <PiTrashLight />
               </C.CommentDeleteButton>
-              {/* <C.ReCommentButton onClick={isReComment}>
-                <PiArrowUDownLeftBold />
-              </C.ReCommentButton> */}
             </div>
           ) : (
-            // <C.ReCommentButton onClick={isReComment}>
-            //   <PiArrowUDownLeftBold />
-            // </C.ReCommentButton>
             ""
           )}
         </C.CommentAndReCommentButton>
-        {reCommentContents ? (
-          <div>
-            <PiArrowElbowDownRightBold />
-            {reCommentContents}
-          </div>
-        ) : (
-          ""
-        )}
       </C.DetailCommentItem>
-
-      {isReCommentWrapper ? (
-        <C.ReCommentArea>
-          <PiArrowElbowDownRightBold
-            style={{ fontSize: "2rem", marginLeft: "10px" }}
-          />
-          <C.ReCommentWrapper>
-            <h6>댓글 남기기</h6>
-            <div>
-              <textarea
-                placeholder="대댓글을 입력해 주세요..."
-                onChange={handleChange}
-              ></textarea>
-              <button onClick={uploadComment}>
-                <PiArrowUpBold />
-              </button>
-            </div>
-          </C.ReCommentWrapper>
-        </C.ReCommentArea>
-      ) : (
-        ""
-      )}
     </>
   );
 };

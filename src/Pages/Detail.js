@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import * as D from "../styled-components/DetailStyled";
@@ -8,7 +8,6 @@ import * as B from "../styled-components/BoardListStyled";
 import {
   useDetailData,
 } from "../API/detailApiService";
-import { useDispatch, useSelector } from "react-redux";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { getCookie } from "../cookie/ReactCookie";
 import { usePostComment,useGetComment } from "../API/commentApiService";
@@ -26,11 +25,7 @@ import { useDeletePost } from "../API/boardApiService";
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const ref = useRef();
 
-  const postComments = useSelector((state) => state.postComments); // 댓글 등록하기
-  const commentsData = useSelector((state) => state.commentsData); //댓글 api
   const [handelComment, sethandelComment] = useState(""); // 댓글 내용
 
   const userData = getCookie("userLoginInfo");
@@ -69,7 +64,7 @@ const Detail = () => {
   const {mutate:postCommentMutate} = usePostComment(); //리액트 쿼리로 댓글 등록하기
 
   const postComment = async (contents) => {
-    const email = userData.email;
+    const email = userData;
     return postCommentMutate({id,contents, email})
   };
   //댓글 api 불러오기------------------------------------------
@@ -153,8 +148,8 @@ const Detail = () => {
 
         <D.DetailContents>{data.contents}</D.DetailContents>
 
-        {/* 수정 삭제 버튼---------------------------------------------- */}
-        {data?.email == userData.email ? (
+        {/* 수정, 삭제 버튼---------------------------------------------- */}
+        {data?.email == userData ? (
           <D.UpdateAndDeleteButton>
             <D.UpdateButton onClick={goToUpdate}>수 정</D.UpdateButton>
             <D.DeleteButton onClick={deleteContents}>삭 제</D.DeleteButton>
@@ -175,7 +170,7 @@ const Detail = () => {
             </h4>
 
             <D.WriteComment>
-              <D.CommentTextArea  onChange={writeComment}/>
+              <D.CommentTextArea onChange={writeComment}/>
               <D.CommentSubmitButton onClick={addComment}>
                 등 록
               </D.CommentSubmitButton>

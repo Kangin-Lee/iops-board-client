@@ -26,7 +26,7 @@ const BoardList = () => {
   //페이지가 바뀔 때마다 게시판 api 호출 및 totalPages 설정
   useEffect(() => {
     refetch();
-
+    console.log(data);
     // 데이터가 유효하고, totalPages 속성이 존재하는지 확인
     if (data && data?.totalPages) {
       dispatch(setTotalPages(data.totalPages)); 

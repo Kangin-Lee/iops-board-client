@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import * as B from "../styled-components/BoardItemStyled";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { getCookie } from "../cookie/ReactCookie";
 
@@ -17,15 +16,18 @@ const BoardItem = ({ data }) => {
   const navigate = useNavigate();
   const [selectItemId, setSelectItemId] = useState(null);
 
+  //쿠키에서 로그인 정보 가져오기
   const isLogin = getCookie("userLoginInfo");
+  
   const boardList = data.content;
 
   //상세 글 보러가기--------------------------------------------------
   const showDetailContents = (id) => {
     console.log("클릭했을 때 ", id);
     setSelectItemId(id);
+
+    //로그인한 사용자만이 상세 글 조회 가능
     if (isLogin) {
-      console.log(isLogin);
       navigate(`/board/${id}`);
     } else {
       showFailAlert("로그인한 유저만 이용 가능합니다.");
@@ -46,7 +48,7 @@ const BoardItem = ({ data }) => {
             <li style={{ width: "10%" }}>{list.id}</li>
             <li style={{ width: "40%" }}>{list.title}</li>
             <li style={{ width: "20%" }}>
-              {list.email == null ? "알수없음" : list.email.split("@")[0]}
+              {list.email.split("@")[0]}
             </li>
             <li style={{ width: "20%" }}>
               {list.updateTime === null ? list.createDate : list.updateTime}

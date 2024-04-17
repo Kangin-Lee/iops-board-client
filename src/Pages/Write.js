@@ -43,19 +43,20 @@ const Write = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    // 필요한 모든 데이터를 객체에 담습니다.
+    // 제목, 내용, 작성자 묶어서 데이터 전달.
     const postData = {
       title: titleInputRef.current.value,
       contents: contentsTextAreaRef.current.value,
-      writer: isLogin.email,
+      writer: isLogin,
     };
 
-    // mutate 함수를 호출할 때 postData 객체를 전달합니다.
+    // mutate 함수를 호출할 때 postData 객체를 전달.
     if (postData.title === "") {
       showFailAlert("제목을 입력해 주세요.");
     } else if (postData.contents === "") {
       showFailAlert("내용을 입력해 주세요.");
     } else {
+
       // useMutation의 onSuccess 콜백에 refetch()를 추가하여 요청 성공 시 자동으로 새로고침하도록 설정
       mutate(postData, {
         onSuccess: () => {
@@ -117,7 +118,6 @@ const Write = () => {
               <textarea
                 placeholder="내용을 입력하세요"
                 ref={contentsTextAreaRef}
-                // onKeyDown={createBoardItem}
               />
             </W.TextAreaWrapper>
             <hr />

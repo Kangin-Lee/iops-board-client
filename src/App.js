@@ -3,7 +3,6 @@ import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import Board from "./Pages/Board";
 import Detail from "./Pages/Detail";
-import { UpdateButton } from "./styled-components/UpdateStyled";
 import Update from "./Pages/Update";
 
 function App() {

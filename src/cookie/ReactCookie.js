@@ -34,6 +34,7 @@ export const getCookieExpirationTime = (name) => {
   const cookie = cookies.get(name);
   if (cookie && cookie.maxAge) {
     const expirationTime = cookie.maxAge;
+    console.log("expirationTime "+expirationTime);
     return expirationTime;
   } else {
     return null;

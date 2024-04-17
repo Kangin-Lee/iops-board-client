@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiService } from "./apiService";
+import { apiService } from "../common/apiService";
 /**
  * <pre>
  * 최초 작성자 : 이강인

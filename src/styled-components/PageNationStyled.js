@@ -9,7 +9,7 @@ export const PageNationWapper = styled.div`
 export const PageNumber = styled.li`
 
   margin: 13px 5px 0px 5px;
-  
+  display: flex;
   
   .page-active {
     border: 2px solid white;
@@ -38,5 +38,12 @@ export const PageNumber = styled.li`
     background-color: #31447a;
       transition: 0.3s;
       transform: translateY(2px);
+  }
+
+  .before-page{
+    margin-left: 10px;
+  }
+  .after-page{
+    margin-right: 10px;
   }
 `;

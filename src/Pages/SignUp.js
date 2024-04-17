@@ -65,6 +65,7 @@ const SignUp = () => {
             name="email"
             placeholder="이메일을 입력하세요."
             autoFocus
+            
             ref={emailInput}
             {...register("email", { required: true, pattern: emailRegex })}
           />

@@ -1,4 +1,4 @@
-import { apiService } from "./apiService";
+import { apiService } from "../common/apiService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,11 @@ import { showFailAlert } from "../Alert/ErrorAlert";
  * <pre>
  * 최초 작성자 : 이강인
  * 최초 작성일 : 2024-04-12
- * 용도 : 게시판의 게시물 관련 CRUD 모음
+ * 용도 : 리액트 쿼리를 이용한 게시판의 게시물 관련 CRUD 모음
  * </pre>
+ * 
+ * useQuery: 서버에서 데이터를 가져올 때(get)
+ * useMutation: 서버의 데이터를 업데이트 하는 경우(post, put, delete)
  */
 
 //게시글 생성 post 요청 Write------------------------------------------

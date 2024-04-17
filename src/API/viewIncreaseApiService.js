@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { apiService } from "./apiService";
+import { apiService } from "../common/apiService";
 
 /**
  * <pre>

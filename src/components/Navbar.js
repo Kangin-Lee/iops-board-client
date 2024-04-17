@@ -39,11 +39,11 @@ const Navbar = () => {
     if (userData === undefined) {
       setLoggedInUserEmail("비회원");
     } else {
-      const email = userData?.email;
-      const userName = email?.split("@")[0];
+      const userName = userData?.split("@")[0];
       setLoggedInUserEmail(userName);
     }
   }, []);
+
 
 
   return (

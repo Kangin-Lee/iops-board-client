@@ -29,7 +29,6 @@ const Login = () => {
     mutate(data, email);
   };
   //-----------------------------------------------------------
-
   return (
     <L.LoginWapper>
       <L.LoginForm onSubmit={handleSubmit(onSubmit)}>

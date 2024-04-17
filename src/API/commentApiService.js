@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { showFailAlert } from "../Alert/ErrorAlert";
-import { apiService } from "./apiService";
+import { apiService } from "../common/apiService";
 import { useDispatch, useSelector } from "react-redux";
 import { setPostComments } from "../redux/action";
 
