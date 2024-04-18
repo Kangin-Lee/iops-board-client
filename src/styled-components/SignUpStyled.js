@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : Signup Styled-Component
+ * </pre>
+ */
+
 export const SignUpWapper = styled.div`
   background-image: url("images/login-image.jpg");
   background-position: center;
@@ -51,6 +59,9 @@ export const InputBox = styled.input`
   border-radius: 3px;
   margin-top: 3px;
   border: 3px solid lightgray;
+  &[type="password"] {
+    font-family: "noto-sans";
+  }
 `;
 
 export const SignUpButton = styled.button.attrs({

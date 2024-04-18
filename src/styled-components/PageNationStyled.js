@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : PageNation Styled-Component
+ * </pre>
+ */
+
 export const PageNationWapper = styled.div`
   display: flex;
   justify-content: center;

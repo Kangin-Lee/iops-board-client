@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : CommentItem Styled-Component
+ * </pre>
+ */
+
 export const DetailCommentItem = styled.div`
   background-color: lightgray;
   padding: 10px;

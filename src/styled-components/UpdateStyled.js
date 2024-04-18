@@ -1,7 +1,14 @@
 import styled from "styled-components";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : Update Styled-Component
+ * </pre>
+ */
+
 export const DetailWrapper = styled.form`
-  /* background-color: #edebeb; */
   border: 3px solid #222f54;
   font-family: "Noto Sans KR", sans-serif;
   border-radius: 10px;

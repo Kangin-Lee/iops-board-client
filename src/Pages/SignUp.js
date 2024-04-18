@@ -7,10 +7,9 @@ import {
   HiOutlineExclamation,
 } from "react-icons/hi";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import * as S from "../styled-components/SignUpStyled";
-import axios from "axios";
 import { useSignUpData } from "../API/signupApiService";
+import { emailRegex, passwordRegex, telRegex } from "../common/ValidateUser";
 
 /**
  * <pre>
@@ -39,17 +38,6 @@ const SignUp = () => {
   const password = useRef(null);
   password.current = watch("password");
 
-  //이메일 및 비밀번호 유효성 검사 변수==============================================================
-  // 영문 대소문자, 숫자, 밑줄, 마침표, 퍼센트, 더하기, 하이픈으로 시작하는 이메일 주소를 검증하며, 이메일 도메인은 최소 2자 이상의 영문 대소문자로 이루어져야 합니다
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
-
-  // 최소한 하나의 특수 문자, 대문자, 소문자를 포함해야 하는 8글자 이상의 비밀번호 패턴을 검증합니다.
-  const passwordRegex =
-    /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z]).{8,}$/;
-
-  // 전화번호의 양식이 "000-0000-0000" 또는 "000-000-0000"과 같이 세 자리, 네 자리 숫자로 이루어진 양식이어야 함을 나타냅니다.
-  const telRegex = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$/;
-
   return (
     <S.SignUpWapper>
       <S.SignUpForm onSubmit={handleSubmit(onSubmit)}>
@@ -65,22 +53,23 @@ const SignUp = () => {
             name="email"
             placeholder="이메일을 입력하세요."
             autoFocus
-            
             ref={emailInput}
             {...register("email", { required: true, pattern: emailRegex })}
           />
-          {errors.email && errors.email.type === "required" && (
-            <S.WarningMessage>
-              <HiOutlineExclamation />
-              <p>이메일을 입력하세요.</p>
-            </S.WarningMessage>
-          )}
-          {errors.email && errors.email.type === "pattern" && (
-            <S.WarningMessage>
-              <HiOutlineExclamation />
-              <p>올바른 이메일 양식이 아닙니다.</p>
-            </S.WarningMessage>
-          )}
+          <S.WarningMessage>
+            {errors.email && errors.email.type === "required" && (
+              <>
+                <HiOutlineExclamation />
+                <p>이메일을 입력하세요.</p>
+              </>
+            )}
+            {errors.email && errors.email.type === "pattern" && (
+              <>
+                <HiOutlineExclamation />
+                <p>올바른 이메일 양식이 아닙니다.</p>
+              </>
+            )}
+          </S.WarningMessage>
           {!errors.email && <br />}
         </S.InputWapper>
         <S.InputWapper>

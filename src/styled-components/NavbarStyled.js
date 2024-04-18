@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+/**
+ * <pre>
+ * 최초 작성자 : 이강인
+ * 최초 작성일 : 2024-03-08
+ * 용도 : Navbar Styled-Component
+ * </pre>
+ */
+
 export const NavWrapper = styled.div`
   height: 100px;
   display: flex;

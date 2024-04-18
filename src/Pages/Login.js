@@ -4,6 +4,7 @@ import { HiMail, HiLockClosed, HiOutlineExclamation } from "react-icons/hi";
 import * as L from "../styled-components/LoginStyled";
 import { useForm } from "react-hook-form";
 import { useLoginData } from "../API/loginApiService";
+import { emailRegex, passwordRegex } from "../common/ValidateUser";
 
 /**
  * <pre>
@@ -23,9 +24,9 @@ const Login = () => {
   } = useForm();
 
   //로그인 리액트 쿼리로 처리하기--------------------------------
-  const {mutate} = useLoginData();
+  const { mutate } = useLoginData();
   const onSubmit = async (data) => {
-    const {email} = data;
+    const { email } = data;
     mutate(data, email);
   };
   //-----------------------------------------------------------
@@ -52,14 +53,22 @@ const Login = () => {
             placeholder="이메일을 입력하세요."
             autoFocus
             onChange={(e) => setEmail(e.target.value)}
-            {...register("email", { required: true })}
+            {...register("email", { required: true, pattern: emailRegex })}
           />
-          {errors.email && errors.email.type === "required" && (
-            <L.WarningMessage>
-              <HiOutlineExclamation />
-              <p>이메일을 입력하세요.</p>
-            </L.WarningMessage>
-          )}
+          <L.WarningMessage>
+            {errors.email && errors.email.type === "required" && (
+              <>
+                <HiOutlineExclamation />
+                <p>이메일을 입력하세요.</p>
+              </>
+            )}
+            {errors.email && errors.email.type === "pattern" && (
+              <>
+                <HiOutlineExclamation />
+                <p>올바른 이메일 양식이 아닙니다.</p>
+              </>
+            )}
+          </L.WarningMessage>
           {!errors.email && <br />}
         </L.InputWapper>
         <L.InputWapper>
@@ -72,14 +81,27 @@ const Login = () => {
             id="input-password"
             placeholder="비밀번호를 입력하세요."
             onChange={(e) => setPassword(e.target.value)}
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: true,
+              pattern: passwordRegex,
+            })}
           />
-          {errors.password && errors.password.type === "required" && (
-            <L.WarningMessage>
-              <HiOutlineExclamation />
-              <p>비밀번호를 입력하세요.</p>
-            </L.WarningMessage>
-          )}
+          <L.WarningMessage>
+            {errors.password && errors.password.type === "required" && (
+              <>
+                <HiOutlineExclamation />
+                <p>비밀번호를 입력하세요.</p>
+              </>
+            )}
+            {errors.password && errors.password.type === "pattern" && (
+              <>
+                <HiOutlineExclamation />
+                <p>
+                  비밀번호는 특수문자, 대문자, 소문자를 포함한 8글자 이상입니다.
+                </p>
+              </>
+            )}
+          </L.WarningMessage>
           {!errors.password && <br />}
         </L.InputWapper>
         <L.LoginButton>LOGIN</L.LoginButton>
