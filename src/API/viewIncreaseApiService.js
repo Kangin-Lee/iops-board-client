@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiService } from "../common/apiService";
+import { getCookie } from "../cookie/ReactCookie";
 
 /**
  * <pre>
@@ -11,8 +12,12 @@ import { apiService } from "../common/apiService";
 
 //조회 수 증가 Detail-------------------------------------------
 export const useIncreaseCount = (id) => {
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
+
     const increaseCount = () => {
-      return apiService.put(`/board/${id}`);
+      return apiService.put(`/board/${id}`,{headers});
     };
   
     return useMutation({

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { showFailAlert } from "../Alert/ErrorAlert";
+import { getCookie } from "../cookie/ReactCookie";
 
 /**
  * <pre>
@@ -16,21 +17,29 @@ import { showFailAlert } from "../Alert/ErrorAlert";
  * useMutation: 서버의 데이터를 업데이트 하는 경우(post, put, delete)
  */
 
+
+
+
 //게시글 생성 post 요청 Write------------------------------------------
 export const useCreatePost = () => {
+
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
+
   const createPost = (postData) => {
-    return apiService.post("/create", postData);
+    return apiService.post("/create", postData, {headers});
   };
 
   return useMutation({
     mutationKey: ["createPost"],
     mutationFn: createPost,
-    enabled: false,
     onSuccess: () => {
       console.log("성공");
     },
 
-    onError: () => {
+    onError: (error) => {
+      console.log(error);
       showFailAlert("글 작성 중 에러가 발생하였습니다.");
     },
   });

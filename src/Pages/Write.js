@@ -24,7 +24,6 @@ const Write = () => {
   const [lgShow, setLgShow] = useState(false);
   const titleInputRef = useRef(null);
   const contentsTextAreaRef = useRef(null);
-
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -36,7 +35,8 @@ const Write = () => {
   // 리액트 쿼리로 서버에서 게시판 리스트 받아오기----------------
   const { refetch } = useBoardData();
   // ----------------------------------------------------------
-  const isLogin = getCookie("userLoginInfo");
+  const isLogin = getCookie("jwt_token");
+  const userInfo = getCookie("userInfo")
 
   //리액트 쿼리로 서버에 게시글 저장하기--------------------------
   const { mutate } = useCreatePost();
@@ -47,7 +47,7 @@ const Write = () => {
     const postData = {
       title: titleInputRef.current.value,
       contents: contentsTextAreaRef.current.value,
-      writer: isLogin,
+      writer: userInfo,
     };
 
     // mutate 함수를 호출할 때 postData 객체를 전달.

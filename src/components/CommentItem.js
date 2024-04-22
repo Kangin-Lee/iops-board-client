@@ -32,7 +32,7 @@ const CommentItem = ({ list }) => {
   const dispatch = useDispatch();
 
   const id = list.id;
-  const userData = getCookie("userLoginInfo");
+  const userData = getCookie("userInfo");
 
   const updateComment = () => {
     setUpdateComments(!updateComments);
@@ -91,7 +91,7 @@ const CommentItem = ({ list }) => {
     <>
       <C.DetailCommentItem>
         <C.EmailAndTime>
-          <h6>{list.email.split("@")[0]}</h6>
+          <h6>{list.email}</h6>
           <p>{list.updateTime === null ? list.createTime : list.updateTime}</p>
         </C.EmailAndTime>
 

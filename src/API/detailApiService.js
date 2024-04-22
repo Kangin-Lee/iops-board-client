@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiService } from "../common/apiService";
+import { getCookie } from "../cookie/ReactCookie";
 /**
  * <pre>
  * 최초 작성자 : 이강인
@@ -10,8 +11,11 @@ import { apiService } from "../common/apiService";
 
 //상세보기 리스트 api 받아오기 Detail -----------------
 export const useDetailData = (id) => {
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
     const detailData = () => {
-      return apiService.get(`/board/${id}`);
+      return apiService.get(`/board/${id}`,{headers});
     };
     return useQuery({
       queryKey: ["get"],

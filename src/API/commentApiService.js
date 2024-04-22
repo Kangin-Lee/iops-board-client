@@ -5,6 +5,7 @@ import { showFailAlert } from "../Alert/ErrorAlert";
 import { apiService } from "../common/apiService";
 import { useDispatch, useSelector } from "react-redux";
 import { setPostComments } from "../redux/action";
+import { getCookie } from "../cookie/ReactCookie";
 
 /**
  * <pre>
@@ -41,8 +42,11 @@ export const usePostComment = () => {
 
 // 댓글 api 불러오기 Detail------------------------------------------------
 export const useGetComment = (id) => {
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
   const getComment = () => {
-    return apiService.get(`/board/${id}/comments`);
+    return apiService.get(`/board/${id}/comments`,{headers});
   };
 
   return useQuery({

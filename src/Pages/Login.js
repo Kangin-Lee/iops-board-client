@@ -26,8 +26,7 @@ const Login = () => {
   //로그인 리액트 쿼리로 처리하기--------------------------------
   const { mutate } = useLoginData();
   const onSubmit = async (data) => {
-    const { email } = data;
-    mutate(data, email);
+    mutate(data);
   };
   //-----------------------------------------------------------
   return (
@@ -53,7 +52,7 @@ const Login = () => {
             placeholder="이메일을 입력하세요."
             autoFocus
             onChange={(e) => setEmail(e.target.value)}
-            {...register("email", { required: true, pattern: emailRegex })}
+            {...register("username", { required: true, pattern: emailRegex })}
           />
           <L.WarningMessage>
             {errors.email && errors.email.type === "required" && (

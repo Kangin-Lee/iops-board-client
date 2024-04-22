@@ -17,7 +17,7 @@ const BoardItem = ({ data }) => {
   const [selectItemId, setSelectItemId] = useState(null);
 
   //쿠키에서 로그인 정보 가져오기
-  const isLogin = getCookie("userLoginInfo");
+  const isLogin = getCookie("jwt_token");
   
   const boardList = data.content;
 

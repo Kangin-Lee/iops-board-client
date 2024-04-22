@@ -28,7 +28,7 @@ const Detail = () => {
 
   const [handelComment, sethandelComment] = useState(""); // 댓글 내용
 
-  const userData = getCookie("userLoginInfo");
+  const userData = getCookie("userInfo");
 
   //디테일 정보 불러오기------------------------------------------
   const { isLoading, data, isError, error } = useDetailData(id);
@@ -49,7 +49,7 @@ const Detail = () => {
   const addComment = async (e) => {
     e.preventDefault();
 
-    const userData = getCookie("userLoginInfo");
+    const userData = getCookie("userInfo");
     if (userData === undefined) {
       showFailAlert("로그인한 유저만 이용 가능합니다.");
       navigate("/login");
