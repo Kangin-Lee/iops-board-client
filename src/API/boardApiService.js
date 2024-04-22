@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { getCookie } from "../cookie/ReactCookie";
-
 /**
  * <pre>
  * 최초 작성자 : 이강인
@@ -64,8 +63,13 @@ export const useBoardData = () => {
 
 //수정 버튼을 눌렀을 때 수정할 글 api 가져오기 Update---------------
 export const useGetUpdateBoard = (id) => {
+
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
+
   const getUpdateBoard = () => {
-    return apiService.get(`/board/${id}`);
+    return apiService.get(`/board/${id}`, {headers});
   };
 
   return useQuery({
@@ -79,8 +83,13 @@ export const useGetUpdateBoard = (id) => {
 // 게시글 수정-----------------------------------------------------------
 export const usePutUpdateContents = (id) => {
   const navigate = useNavigate();
+
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
+
   const putUpdateContents = ({ title, contents }) => {
-    return apiService.put(`/update/${id}`, { title, contents });
+    return apiService.put(`/update/${id}`, { title, contents },{headers});
   };
 
   return useMutation({
@@ -108,8 +117,12 @@ export const usePutUpdateContents = (id) => {
 export const useDeletePost = () => {
     const navigate = useNavigate();
   
+    const headers = {
+      AUTHORIZATION: getCookie("jwt_token"),
+    }
+
     const deletePost = (id) => {
-      return apiService.delete(`/delete/${id}`);
+      return apiService.delete(`/delete/${id}`, {headers});
     };
   
     return useMutation({

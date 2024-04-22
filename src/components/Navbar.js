@@ -6,10 +6,10 @@ import { useDispatch } from "react-redux";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import {
   getCookie,
-  getCookieExpirationTime,
   removeCookie,
 } from "../cookie/ReactCookie";
 import { showFailAlert } from "../Alert/ErrorAlert";
+import { showWarningAlert } from "../Alert/WarningAlert";
 
 /**
  * <pre>
@@ -72,6 +72,7 @@ const Navbar = () => {
           "시간이 만료되어 자동 로그아웃됩니다. 다시 로그인 해주세요."
         );
         navigate("/login");
+        
         removeCookie("expiresTime");
         removeCookie("jwt_token");
         removeCookie("userInfo");
@@ -87,7 +88,7 @@ const Navbar = () => {
   }, [expiresTime]);
 
   if (time === 299) {
-    showFailAlert("5분 후에 자동으로 로그아웃됩니다.");
+    showWarningAlert("5분 후에 자동으로 로그아웃됩니다.");
   }
 
   return (

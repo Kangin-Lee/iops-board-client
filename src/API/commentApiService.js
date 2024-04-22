@@ -18,8 +18,12 @@ import { getCookie } from "../cookie/ReactCookie";
 //댓글 등록하기 Detail------------------------
 export const usePostComment = () => {
   const dispatch = useDispatch();
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
+
   const postComment = ({ id, contents, email }) => {
-    return apiService.post(`/board/${id}/comments`, { contents, email });
+    return apiService.post(`/board/${id}/comments`, { contents, email }, {headers});
   };
 
   return useMutation({
@@ -60,11 +64,13 @@ export const useGetComment = (id) => {
 
 //댓글 수정 기능-----------------------------------------------
 export const useCommentUpdate = () => {
-
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
   const commentUpdate = (commentData) => {
     const id = commentData.id;
     const contents = commentData.contents;
-    return apiService.put(`/update/comment/${id}`, {contents})
+    return apiService.put(`/update/comment/${id}`, {contents}, {headers})
   };
 
   return useMutation({
@@ -75,8 +81,12 @@ export const useCommentUpdate = () => {
 
 // 댓글 삭제 기능 -----------------------------------------------
 export const useCommentDelete = (id) => {
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
+
   const commentDelete = () => {
-    return apiService.delete(`/comment/${id}`);
+    return apiService.delete(`/comment/${id}`, {headers});
   };
 
   return useMutation({
@@ -87,7 +97,12 @@ export const useCommentDelete = (id) => {
     },
 
     onError: (error) => {
-      showFailAlert("댓글을 삭제하던 중 오류가 발생했습니다.", error);
+      if(error.response.status === 403){
+        showFailAlert("댓글을 삭제할 권한이 없습니다.");
+      }else{
+        showFailAlert("댓글을 삭제하던 중 오류가 발생했습니다.", error);
+      }
+      
     },
   });
 };

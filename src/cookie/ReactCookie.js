@@ -29,18 +29,4 @@ export const removeCookie = (name, option) => {
   return cookies.remove(name, { ...option });
 };
 
-// 쿠키 만료 시간 가져오기--------------------------------
-// export const getCookieExpirationTime = (name) => {
-//   const cookie = cookies.get(name);
-//   console.log(cookie.maxAge);
-//   if (cookie && cookie.maxAge) {
-//     const expirationTime = cookie.maxAge;
-//     console.log("expirationTime "+expirationTime);
-
-//     return expirationTime;
-//   } else {
-//     console.log('zz')
-//     return null;
-//   }
-// };
 

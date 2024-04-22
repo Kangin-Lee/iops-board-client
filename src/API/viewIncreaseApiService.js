@@ -17,18 +17,21 @@ export const useIncreaseCount = (id) => {
   }
 
     const increaseCount = () => {
-      return apiService.put(`/board/${id}`,{headers});
+      return apiService.put(`/board/${id}`,{}, {
+        headers
+      });
     };
   
     return useMutation({
       mutationFn: increaseCount,
-      mutationKey: ["increaseCount"],
       onSuccess: () => {
         console.log("조회수 증가 성공@@");
       },
   
       onError: (error) => {
-        console.log("조회수 증가 에러", error);
+        console.log("조회수 증가 에러", error.response.status);
+     
       },
     });
   };
+  
