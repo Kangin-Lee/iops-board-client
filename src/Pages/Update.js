@@ -43,7 +43,8 @@ const Update = () => {
   };
 
   //수정 완료 버튼 db에 저장--------------------------------------------------------
-  const {mutate} = usePutUpdateContents(id);
+  const {mutate} = usePutUpdateContents(id); //useMutation을 이용해 put 작업 실행
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const title = titleInputRef.current.value;

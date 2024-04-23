@@ -21,6 +21,27 @@ export const SignUpWapper = styled.div`
   font-family: "NanumSquare", sans-serif;
 `;
 
+export const FormTitle = styled.div`
+  display: flex;
+  
+  .login-title{
+    color: lightgray;
+    padding-right: 5px;
+    transition: 0.3s;
+    text-decoration: none;
+  }
+
+  .login-title:hover{
+    color: black;
+    cursor: pointer;
+    transition: 0.3s;
+    transform: translateY(2px);
+  }
+  .signup-title{
+    padding-left: 5px;
+  }
+`
+
 export const SignUpForm = styled.form`
   background-color: white;
   border-radius: 5px;
@@ -93,13 +114,13 @@ export const WarningMessage = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
-  
-  p{
+
+  p {
     margin: 0;
     padding-left: 3px;
     font-weight: bold;
   }
-`
+`;
 
 export const CopyRight = styled.div`
   margin: 0;

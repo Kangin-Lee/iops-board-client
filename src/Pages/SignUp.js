@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import * as S from "../styled-components/SignUpStyled";
 import { useSignUpData } from "../API/signupApiService";
 import { emailRegex, passwordRegex, telRegex } from "../common/ValidateUser";
+import { Link } from "react-router-dom";
 
 /**
  * <pre>
@@ -41,7 +42,15 @@ const SignUp = () => {
   return (
     <S.SignUpWapper>
       <S.SignUpForm onSubmit={handleSubmit(onSubmit)}>
-        <h1>SIGNUP</h1>
+        <S.FormTitle>
+          <Link to="/login" style={{textDecoration:"none"}}>
+            <h1 className="login-title">LOGIN</h1>
+          </Link>
+          <h1>|</h1>
+          <h1 className="signup-title">SIGNUP</h1>
+        </S.FormTitle>
+
+        {/* 이메일 파트--------------------------------------------------- */}
         <S.InputWapper>
           <S.Label for="input-email">
             <HiMail style={{ fontSize: "30px" }} />
@@ -72,6 +81,9 @@ const SignUp = () => {
           </S.WarningMessage>
           {!errors.email && <br />}
         </S.InputWapper>
+        {/* --------------------------------------------------------------- */}
+
+        {/* 이름 파트------------------------------------------------------ */}
         <S.InputWapper>
           <S.Label for="input-name">
             <HiUser style={{ fontSize: "30px" }} />
@@ -97,6 +109,9 @@ const SignUp = () => {
           )}
           {!errors.name && <br />}
         </S.InputWapper>
+        {/* --------------------------------------------------------------- */}
+
+        {/* 전화번호 파트--------------------------------------------------- */}
         <S.InputWapper>
           <S.Label for="input-tel">
             <HiPhone style={{ fontSize: "30px" }} />
@@ -122,6 +137,9 @@ const SignUp = () => {
           )}
           {!errors.tel && <br />}
         </S.InputWapper>
+        {/* --------------------------------------------------------------- */}
+
+        {/* 비밀번호 파트--------------------------------------------------- */}
         <S.InputWapper>
           <S.Label for="input-password">
             <HiLockClosed style={{ fontSize: "30px" }} />
@@ -153,6 +171,9 @@ const SignUp = () => {
           )}
           {!errors.password && <br />}
         </S.InputWapper>
+        {/* --------------------------------------------------------------- */}
+
+        {/* 비밀번호 재확인 파트-------------------------------------------- */}
         <S.InputWapper>
           <S.Label for="input-password-confirm">
             <HiLockClosed style={{ fontSize: "30px" }} />
@@ -183,6 +204,9 @@ const SignUp = () => {
             )}
           {!errors.password_confirm && <br />}
         </S.InputWapper>
+        {/* --------------------------------------------------------------- */}
+
+        {/* 등록버튼 */}
         <S.SignUpButton onSubmit={onSubmit}>SIGNUP</S.SignUpButton>
         <hr />
         <S.CopyRight>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiMail, HiLockClosed, HiOutlineExclamation } from "react-icons/hi";
 import * as L from "../styled-components/LoginStyled";
 import { useForm } from "react-hook-form";
@@ -41,6 +41,8 @@ const Login = () => {
         >
           LOGIN
         </h1>
+
+        {/* 이메일 파트---------------------------------------------------- */}
         <L.InputWapper>
           <L.Label for="input-email">
             <HiMail style={{ fontSize: "30px" }} />
@@ -70,6 +72,9 @@ const Login = () => {
           </L.WarningMessage>
           {!errors.email && <br />}
         </L.InputWapper>
+        {/* --------------------------------------------------------------- */}
+
+        {/* 비밀번호 파트--------------------------------------------------- */}
         <L.InputWapper>
           <L.Label for="input-password">
             <HiLockClosed style={{ fontSize: "30px" }} />{" "}
@@ -103,7 +108,12 @@ const Login = () => {
           </L.WarningMessage>
           {!errors.password && <br />}
         </L.InputWapper>
+        {/* --------------------------------------------------------------- */}
+
+        {/* 로그인 버튼 */}
         <L.LoginButton>LOGIN</L.LoginButton>
+        
+        {/* 회원가입 페이지로 이동 */}
         <L.SingUpPage>
           아직 회원이 아니신가요?
           <Link

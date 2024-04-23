@@ -6,37 +6,20 @@
  * </pre>
  */
 
-export const addPost = (post) => ({
-  type: "ADD_POST",
-  payload: post,
-});
-
+//현재 페이지
 export const setCurrentPage = (pageNumber) => ({
   type: "SET_CURRENT_PAGE",
   payload: pageNumber,
 });
 
+//총 페이지 수
 export const setTotalPages = (totalPages) => ({
   type: "SET_TOTAL_PAGES",
   payload: totalPages,
 });
 
+//변경된 댓글 내용
 export const setHandleUpdateComment = (handleUpdateComment) => ({
   type:"SET_HANDLE_UPDATE_COMMENT",
   payload: handleUpdateComment,
 });
-
-export const setCommentsData = (commentsData) => ({
-  type:"SET_COMMENTS_DATA",
-  payload:commentsData,
-})
-
-export const setPostComments = (postComments) => ({
-  type:"SET_POST_COMMENTS",
-  payload:postComments,
-})
-
-export const setCommentNum = (commentNum) => ({
-  type:"SET_COMMENT_NUM",
-  payload:commentNum,
-})

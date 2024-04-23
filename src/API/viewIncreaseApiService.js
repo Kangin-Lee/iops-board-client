@@ -30,7 +30,6 @@ export const useIncreaseCount = (id) => {
   
       onError: (error) => {
         console.log("조회수 증가 에러", error.response.status);
-     
       },
     });
   };

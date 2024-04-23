@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { getCookie } from "../cookie/ReactCookie";
+import { get } from "react-hook-form";
+
 /**
  * <pre>
  * 최초 작성자 : 이강인
@@ -16,7 +18,44 @@ import { getCookie } from "../cookie/ReactCookie";
  * useMutation: 서버의 데이터를 업데이트 하는 경우(post, put, delete)
  */
 
+//사용자 정보 가져오기 UserInfo------------------------------
+export const useUserInfo = () => {
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
 
+  const loginUserEmail = getCookie("userInfo")
+  const getUserInfo = () => {
+    return apiService.get(`/user/${loginUserEmail}`, {headers});
+  }
+
+  return useQuery({
+    queryKey:['getUserInfo'],
+    queryFn:getUserInfo,
+    retry:3,
+    select: (data) => data.data,
+  })
+}
+
+//사용자 활동 현황 가져오기 UserInfo----------------------------
+export const useUserActive = () => {
+  const headers = {
+    AUTHORIZATION: getCookie("jwt_token"),
+  }
+
+  const loginUserEmail = getCookie("userInfo")
+
+  const getUserActive = () => {
+    return apiService.get(`/${loginUserEmail}/comment-count`, {headers});
+  }
+
+  return useQuery({
+    queryKey:['getUserAct'],
+    queryFn:getUserActive,
+    retry:3,
+    select: (data) => data.data,
+  })
+}
 
 
 //게시글 생성 post 요청 Write------------------------------------------
@@ -31,16 +70,7 @@ export const useCreatePost = () => {
   };
 
   return useMutation({
-    mutationKey: ["createPost"],
     mutationFn: createPost,
-    onSuccess: () => {
-      console.log("성공");
-    },
-
-    onError: (error) => {
-      console.log(error);
-      showFailAlert("글 작성 중 에러가 발생하였습니다.");
-    },
   });
 };
 
@@ -94,7 +124,6 @@ export const usePutUpdateContents = (id) => {
 
   return useMutation({
     mutationFn: putUpdateContents,
-    mutationKey: ["updateContents"],
     onSuccess: () => {
       console.log();
       showSuccessAlert("수정이 완료되었습니다.");
@@ -127,7 +156,6 @@ export const useDeletePost = () => {
   
     return useMutation({
       mutationFn: deletePost,
-      mutationKey: ["deletePost"],
       onSuccess: () => {
         showSuccessAlert("정상적으로 삭제 되었습니다.");
         navigate("/");

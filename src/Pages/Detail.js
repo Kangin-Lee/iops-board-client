@@ -25,7 +25,6 @@ import { useDeletePost } from "../API/boardApiService";
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [handelComment, sethandelComment] = useState(""); // 댓글 내용
 
   const userData = getCookie("userInfo");
@@ -36,6 +35,7 @@ const Detail = () => {
   const {mutate} = useIncreaseCount(id);
 
   useEffect(()=>{
+    // 조회 수 증가 실행 후 디테일 정보 불러오기
     mutate();
   },[])
 
@@ -149,7 +149,7 @@ const Detail = () => {
         <D.DetailContents>{data.contents}</D.DetailContents>
 
         {/* 수정, 삭제 버튼---------------------------------------------- */}
-        {data?.email == userData ? (
+        {((data?.email == userData) || (userData === "admin@iops.co.kr")) ? (
           <D.UpdateAndDeleteButton>
             <D.UpdateButton onClick={goToUpdate}>수 정</D.UpdateButton>
             <D.DeleteButton onClick={deleteContents}>삭 제</D.DeleteButton>
@@ -170,7 +170,7 @@ const Detail = () => {
             </h4>
 
             <D.WriteComment>
-              <D.CommentTextArea onChange={writeComment}/>
+              <D.CommentTextArea onChange={writeComment} autoFocus/>
               <D.CommentSubmitButton onClick={addComment}>
                 등 록
               </D.CommentSubmitButton>

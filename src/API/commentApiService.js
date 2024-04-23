@@ -1,10 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { showSuccessAlert } from "../Alert/SuccessAlert";
 import { showFailAlert } from "../Alert/ErrorAlert";
 import { apiService } from "../common/apiService";
-import { useDispatch, useSelector } from "react-redux";
-import { setPostComments } from "../redux/action";
 import { getCookie } from "../cookie/ReactCookie";
 
 /**
@@ -17,7 +14,6 @@ import { getCookie } from "../cookie/ReactCookie";
 
 //댓글 등록하기 Detail------------------------
 export const usePostComment = () => {
-  const dispatch = useDispatch();
   const headers = {
     AUTHORIZATION: getCookie("jwt_token"),
   }
@@ -27,17 +23,8 @@ export const usePostComment = () => {
   };
 
   return useMutation({
-    mutationKey: ["postComment"],
     mutationFn: postComment,
 
-    onSuccess: (data) => {
-      if (data.data === "success") {
-        dispatch(setPostComments(data));
-        console.log("성공@@@@@@@@@@@@@@@@");
-      }
-
-      console.log("data", data);
-    },
     onError: () => {
       showFailAlert("댓글 등록 중 오류가 발생했습니다.");
     },
@@ -75,7 +62,6 @@ export const useCommentUpdate = () => {
 
   return useMutation({
     mutationFn: commentUpdate,
-    mutationKey:["updateComment"],
   })
 }
 
@@ -91,7 +77,6 @@ export const useCommentDelete = (id) => {
 
   return useMutation({
     mutationFn: commentDelete,
-    mutationKey: ["deleteComment"],
     onSuccess: () => {
       showSuccessAlert("댓글 삭제가 완료되었습니다.");
     },

@@ -22,5 +22,6 @@ export const useDetailData = (id) => {
       queryFn: detailData,
       retry: 2,
       select: (data) => data.data,
+      enabled:true,
     });
   };

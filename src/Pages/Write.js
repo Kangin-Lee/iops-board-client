@@ -3,7 +3,6 @@ import { Button, Modal } from "react-bootstrap";
 import { HiOutlinePencil } from "react-icons/hi";
 import * as W from "../styled-components/WriteModalStyled";
 import { useNavigate } from "react-router-dom";
-import { addPost } from "../redux/action";
 import {
   useBoardData,
   useCreatePost,
@@ -64,8 +63,8 @@ const Write = () => {
           setLgShow(false);
           refetch();
         },
-        onError: () => {
-          showFailAlert("글 작성 중 에러가 발생하였습니다.");
+        onError: (error) => {
+          showFailAlert("글 작성 중 에러가 발생하였습니다. "+error);
         }
       });
     }

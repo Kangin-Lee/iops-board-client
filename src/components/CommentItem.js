@@ -38,7 +38,7 @@ const CommentItem = ({ list }) => {
     setUpdateComments(!updateComments);
   };
 
-  const { refetch: updateCommentsRefetch, data: updateCommentsData } =
+  const { refetch: updateCommentsRefetch } =
     useGetComment(id);
 
   // 댓글 삭제---------------------------------------------------
@@ -108,7 +108,7 @@ const CommentItem = ({ list }) => {
               onKeyUp={handleKeyDown}
             />
           )}
-          {list.email === userData ? (
+          {((list.email === userData) || (userData === "admin@iops.co.kr")) ? (
             <div>
               {!updateComments ? (
                 <C.CommentUpdateButton onClick={updateComment}>

@@ -5,7 +5,6 @@ import { showFailAlert } from "../Alert/ErrorAlert";
 import { setCookie } from "../cookie/ReactCookie";
 import { apiService } from "../common/apiService";
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
 
 /**
  * <pre>
@@ -36,8 +35,8 @@ export const useLoginData = () => {
       const expirationTime = decodedToken.exp; // 추출한 페이로드에서 만료 시간을 확인한다.
       const expirationTimeInMillis = expirationTime * 1000; // 만료시간을 ms로 변환
 
-      // 만료 시간을 Date 객체로 변환합니다.
-      const expirationDate = new Date(expirationTimeInMillis);
+      // 만료 시간을 Date 객체로 변환한다.
+      const expirationDate = new Date(expirationTimeInMillis); //ex) Tue Apr 23 2024 12:12:50 GMT+0900 (한국 표준시)
 
       console.log("JWT 토큰의 만료 시간:", expirationDate);
       setCookie("expiresTime",expirationDate); // 만료시간 쿠키에 저장
@@ -51,7 +50,7 @@ export const useLoginData = () => {
     },
 
     onError: (error) => {
-      showFailAlert("😟 유효하지 않은 회원입니다." + error);
+      showFailAlert("😟 유효하지 않은 회원입니다.");
       console.log(error);
     },
   });
